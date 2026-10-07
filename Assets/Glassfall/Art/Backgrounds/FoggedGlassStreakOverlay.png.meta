@@ -1,0 +1,2147 @@
+fileFormatVersion: 2
+guid: 3a190802c553bb945a46b5f84becb618
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3779623652210423119
+    second: FoggedGlassStreakOverlay_0
+  - first:
+      213: -8517697432130450130
+    second: FoggedGlassStreakOverlay_1
+  - first:
+      213: -1240134595470473194
+    second: FoggedGlassStreakOverlay_2
+  - first:
+      213: -4822135153351145760
+    second: FoggedGlassStreakOverlay_3
+  - first:
+      213: -593586278357285514
+    second: FoggedGlassStreakOverlay_4
+  - first:
+      213: 5456737055474912125
+    second: FoggedGlassStreakOverlay_5
+  - first:
+      213: -5526112444162739341
+    second: FoggedGlassStreakOverlay_6
+  - first:
+      213: 8170649253904116397
+    second: FoggedGlassStreakOverlay_7
+  - first:
+      213: 5828648294692909580
+    second: FoggedGlassStreakOverlay_8
+  - first:
+      213: 668054963552569125
+    second: FoggedGlassStreakOverlay_9
+  - first:
+      213: 6900274760948048677
+    second: FoggedGlassStreakOverlay_10
+  - first:
+      213: 4427216872480772323
+    second: FoggedGlassStreakOverlay_11
+  - first:
+      213: 5889243872625796220
+    second: FoggedGlassStreakOverlay_12
+  - first:
+      213: -6188245635057042193
+    second: FoggedGlassStreakOverlay_13
+  - first:
+      213: 5384752703174294536
+    second: FoggedGlassStreakOverlay_14
+  - first:
+      213: 7957166751984448657
+    second: FoggedGlassStreakOverlay_15
+  - first:
+      213: 8218389786549162802
+    second: FoggedGlassStreakOverlay_16
+  - first:
+      213: -1131455322385901919
+    second: FoggedGlassStreakOverlay_17
+  - first:
+      213: 7720383812286669546
+    second: FoggedGlassStreakOverlay_18
+  - first:
+      213: -1927311152100513992
+    second: FoggedGlassStreakOverlay_19
+  - first:
+      213: -8850739382195667061
+    second: FoggedGlassStreakOverlay_20
+  - first:
+      213: -2200526538800384107
+    second: FoggedGlassStreakOverlay_21
+  - first:
+      213: 597284172944686164
+    second: FoggedGlassStreakOverlay_22
+  - first:
+      213: -7252921817484595972
+    second: FoggedGlassStreakOverlay_23
+  - first:
+      213: -3084627669097939161
+    second: FoggedGlassStreakOverlay_24
+  - first:
+      213: -2582934452288109102
+    second: FoggedGlassStreakOverlay_25
+  - first:
+      213: 2768317249225741158
+    second: FoggedGlassStreakOverlay_26
+  - first:
+      213: -5403415361145323209
+    second: FoggedGlassStreakOverlay_27
+  - first:
+      213: 8841327395645655158
+    second: FoggedGlassStreakOverlay_28
+  - first:
+      213: -8756979531184655212
+    second: FoggedGlassStreakOverlay_29
+  - first:
+      213: -6694616442550865711
+    second: FoggedGlassStreakOverlay_30
+  - first:
+      213: -4423337383047526724
+    second: FoggedGlassStreakOverlay_31
+  - first:
+      213: 708172825976716207
+    second: FoggedGlassStreakOverlay_32
+  - first:
+      213: -7162392648893738455
+    second: FoggedGlassStreakOverlay_33
+  - first:
+      213: 4460759067261820308
+    second: FoggedGlassStreakOverlay_34
+  - first:
+      213: 7624250684227859041
+    second: FoggedGlassStreakOverlay_35
+  - first:
+      213: -9058429605783726287
+    second: FoggedGlassStreakOverlay_36
+  - first:
+      213: 7202705281632937240
+    second: FoggedGlassStreakOverlay_37
+  - first:
+      213: 5629706634600398199
+    second: FoggedGlassStreakOverlay_38
+  - first:
+      213: -5452990017930968152
+    second: FoggedGlassStreakOverlay_39
+  - first:
+      213: 4597524157138991554
+    second: FoggedGlassStreakOverlay_40
+  - first:
+      213: -4857997924201969531
+    second: FoggedGlassStreakOverlay_41
+  - first:
+      213: 9091803794685819121
+    second: FoggedGlassStreakOverlay_42
+  - first:
+      213: 5100254146444476436
+    second: FoggedGlassStreakOverlay_43
+  - first:
+      213: 7412510464083459282
+    second: FoggedGlassStreakOverlay_44
+  - first:
+      213: -8471164473239956563
+    second: FoggedGlassStreakOverlay_45
+  - first:
+      213: 1219775624597885447
+    second: FoggedGlassStreakOverlay_46
+  - first:
+      213: -2487875171189297562
+    second: FoggedGlassStreakOverlay_47
+  - first:
+      213: -8337247634452713439
+    second: FoggedGlassStreakOverlay_48
+  - first:
+      213: -4974462622013916225
+    second: FoggedGlassStreakOverlay_49
+  - first:
+      213: 5447908095072051576
+    second: FoggedGlassStreakOverlay_50
+  - first:
+      213: -4215958875327860452
+    second: FoggedGlassStreakOverlay_51
+  - first:
+      213: -7371743114711694547
+    second: FoggedGlassStreakOverlay_52
+  - first:
+      213: 5198139218264773489
+    second: FoggedGlassStreakOverlay_53
+  - first:
+      213: -4545637412855698136
+    second: FoggedGlassStreakOverlay_54
+  - first:
+      213: -5780306879875309352
+    second: FoggedGlassStreakOverlay_55
+  - first:
+      213: 8043137941348751962
+    second: FoggedGlassStreakOverlay_56
+  - first:
+      213: -1825050208589550032
+    second: FoggedGlassStreakOverlay_57
+  - first:
+      213: 4889844675783243918
+    second: FoggedGlassStreakOverlay_58
+  - first:
+      213: -351915897161401852
+    second: FoggedGlassStreakOverlay_59
+  - first:
+      213: 160141932494514784
+    second: FoggedGlassStreakOverlay_60
+  - first:
+      213: -420400798553256016
+    second: FoggedGlassStreakOverlay_61
+  - first:
+      213: 7032462507180349892
+    second: FoggedGlassStreakOverlay_62
+  - first:
+      213: -2547530260879222386
+    second: FoggedGlassStreakOverlay_63
+  - first:
+      213: -4525542298824098235
+    second: FoggedGlassStreakOverlay_64
+  - first:
+      213: 2942195481081694478
+    second: FoggedGlassStreakOverlay_65
+  - first:
+      213: 5395014925613073457
+    second: FoggedGlassStreakOverlay_66
+  - first:
+      213: 6116498022347029116
+    second: FoggedGlassStreakOverlay_67
+  - first:
+      213: -3554121544469037824
+    second: FoggedGlassStreakOverlay_68
+  - first:
+      213: -6754402486890374657
+    second: FoggedGlassStreakOverlay_69
+  - first:
+      213: 1739212518235256702
+    second: FoggedGlassStreakOverlay_70
+  - first:
+      213: 3681016163702008631
+    second: FoggedGlassStreakOverlay_71
+  - first:
+      213: -4353154041376267020
+    second: FoggedGlassStreakOverlay_72
+  - first:
+      213: 5067800821454030505
+    second: FoggedGlassStreakOverlay_73
+  - first:
+      213: -2217238382801929860
+    second: FoggedGlassStreakOverlay_74
+  - first:
+      213: -5336647204976780278
+    second: FoggedGlassStreakOverlay_75
+  - first:
+      213: -5918473267779039194
+    second: FoggedGlassStreakOverlay_76
+  - first:
+      213: 1843637643909002348
+    second: FoggedGlassStreakOverlay_77
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 80
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_0
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 555
+        width: 21
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f45baa6bfabe37430800000000000000
+      internalID: 3779623652210423119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_1
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 607
+        width: 8
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2d8b9d605f0bc980800000000000000
+      internalID: -8517697432130450130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_2
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 611
+        width: 10
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6184f4be7282acee0800000000000000
+      internalID: -1240134595470473194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_3
+      rect:
+        serializedVersion: 2
+        x: 838
+        y: 695
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e6c49570a5541db0800000000000000
+      internalID: -4822135153351145760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_4
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 603
+        width: 10
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 675c7febc6823c7f0800000000000000
+      internalID: -593586278357285514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_5
+      rect:
+        serializedVersion: 2
+        x: 979
+        y: 610
+        width: 8
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7b0b40e0793abb40800000000000000
+      internalID: 5456737055474912125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_6
+      rect:
+        serializedVersion: 2
+        x: 1112
+        y: 645
+        width: 8
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37370d8b20e4f43b0800000000000000
+      internalID: -5526112444162739341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_7
+      rect:
+        serializedVersion: 2
+        x: 1229
+        y: 708
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: daae34bd43af36170800000000000000
+      internalID: 8170649253904116397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_8
+      rect:
+        serializedVersion: 2
+        x: 1241
+        y: 650
+        width: 8
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c027bd51eb483e050800000000000000
+      internalID: 5828648294692909580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_9
+      rect:
+        serializedVersion: 2
+        x: 1262
+        y: 592
+        width: 9
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 527ccf82378654900800000000000000
+      internalID: 668054963552569125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_10
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 685
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 523e6eaf553b2cf50800000000000000
+      internalID: 6900274760948048677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_11
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 619
+        width: 10
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e015d30a42a07d30800000000000000
+      internalID: 4427216872480772323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_12
+      rect:
+        serializedVersion: 2
+        x: 1212
+        y: 646
+        width: 8
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c74a18f791ccab150800000000000000
+      internalID: 5889243872625796220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_13
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 609
+        width: 10
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fec3093b16fee1aa0800000000000000
+      internalID: -6188245635057042193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_14
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 663
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80c370ccd0c7aba40800000000000000
+      internalID: 5384752703174294536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_15
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 597
+        width: 10
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 194f49680098d6e60800000000000000
+      internalID: 7957166751984448657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_16
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 505
+        width: 9
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23316fcc7f59d0270800000000000000
+      internalID: 8218389786549162802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_17
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 623
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a696f501634c40f0800000000000000
+      internalID: -1131455322385901919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_18
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 526
+        width: 8
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae2e5054c20542b60800000000000000
+      internalID: 7720383812286669546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_19
+      rect:
+        serializedVersion: 2
+        x: 718
+        y: 504
+        width: 10
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 837666fe7b0d045e0800000000000000
+      internalID: -1927311152100513992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_20
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 642
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8fbaa4dc6bdb2580800000000000000
+      internalID: -8850739382195667061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_21
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 621
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 597bbf795c82671e0800000000000000
+      internalID: -2200526538800384107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_22
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 461
+        width: 8
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45cb45e6acaf94800800000000000000
+      internalID: 597284172944686164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_23
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 524
+        width: 8
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfc662dd802785b90800000000000000
+      internalID: -7252921817484595972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_24
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 486
+        width: 9
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72f731f5a733135d0800000000000000
+      internalID: -3084627669097939161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_25
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 593
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d5cf35fcc2972cd0800000000000000
+      internalID: -2582934452288109102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_26
+      rect:
+        serializedVersion: 2
+        x: 491
+        y: 483
+        width: 10
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 663dfa9fed90b6620800000000000000
+      internalID: 2768317249225741158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_27
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 463
+        width: 21
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7314b098b563305b0800000000000000
+      internalID: -5403415361145323209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_28
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 469
+        width: 10
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67883684c64b2ba70800000000000000
+      internalID: 8841327395645655158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_29
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 432
+        width: 8
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4943f5a4385f87680800000000000000
+      internalID: -8756979531184655212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_30
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 562
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d0344aa0d1f713a0800000000000000
+      internalID: -6694616442550865711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_31
+      rect:
+        serializedVersion: 2
+        x: 1107
+        y: 471
+        width: 8
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb60fb106162d92c0800000000000000
+      internalID: -4423337383047526724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_32
+      rect:
+        serializedVersion: 2
+        x: 1252
+        y: 531
+        width: 8
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fab3de3ee6fe3d900800000000000000
+      internalID: 708172825976716207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_33
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 430
+        width: 10
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 922d1d475d11a9c90800000000000000
+      internalID: -7162392648893738455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_34
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 527
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49d5eb0dcbcc7ed30800000000000000
+      internalID: 4460759067261820308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_35
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 480
+        width: 9
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1623eef2a97cec960800000000000000
+      internalID: 7624250684227859041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_36
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 462
+        width: 9
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1371164644ef94280800000000000000
+      internalID: -9058429605783726287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_37
+      rect:
+        serializedVersion: 2
+        x: 931
+        y: 460
+        width: 8
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 815af85ca4625f360800000000000000
+      internalID: 7202705281632937240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_38
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 437
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77d34015b5cb02e40800000000000000
+      internalID: 5629706634600398199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_39
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 376
+        width: 8
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a3497948761354b0800000000000000
+      internalID: -5452990017930968152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_40
+      rect:
+        serializedVersion: 2
+        x: 1221
+        y: 390
+        width: 8
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c9fb88bcdfadcf30800000000000000
+      internalID: 4597524157138991554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_41
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 375
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5884b5070ace49cb0800000000000000
+      internalID: -4857997924201969531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_42
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 374
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f8fbcd71639c2e70800000000000000
+      internalID: 9091803794685819121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_43
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 387
+        width: 8
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4104907bf1eb7c640800000000000000
+      internalID: 5100254146444476436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_44
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 241
+        width: 20
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dc7f817ef68ed660800000000000000
+      internalID: 7412510464083459282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_45
+      rect:
+        serializedVersion: 2
+        x: 1051
+        y: 235
+        width: 10
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da39f923bc0607a80800000000000000
+      internalID: -8471164473239956563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_46
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 231
+        width: 9
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70256d9c7738de010800000000000000
+      internalID: 1219775624597885447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_47
+      rect:
+        serializedVersion: 2
+        x: 1164
+        y: 345
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66e6fbf86ba497dd0800000000000000
+      internalID: -2487875171189297562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_48
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 239
+        width: 8
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 120faf7f2752c4c80800000000000000
+      internalID: -8337247634452713439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_49
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 292
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbbf662e99827fab0800000000000000
+      internalID: -4974462622013916225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_50
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 97
+        width: 10
+        height: 158
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 871aeb75c8bda9b40800000000000000
+      internalID: 5447908095072051576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_51
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 163
+        width: 9
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c117d607db7ed75c0800000000000000
+      internalID: -4215958875327860452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_52
+      rect:
+        serializedVersion: 2
+        x: 945
+        y: 251
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d238d20c1be42b990800000000000000
+      internalID: -7371743114711694547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_53
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 97
+        width: 8
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 173d2bdf310832840800000000000000
+      internalID: 5198139218264773489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_54
+      rect:
+        serializedVersion: 2
+        x: 639
+        y: 123
+        width: 10
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82da2095bd6aae0c0800000000000000
+      internalID: -4545637412855698136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_55
+      rect:
+        serializedVersion: 2
+        x: 955
+        y: 222
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d02944a48938cfa0800000000000000
+      internalID: -5780306879875309352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_56
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 120
+        width: 10
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5a1f81e757fe9f60800000000000000
+      internalID: 8043137941348751962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_57
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 11
+        width: 8
+        height: 139
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03e64cb318e1ca6e0800000000000000
+      internalID: -1825050208589550032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_58
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 71
+        width: 13
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8835ea33d73cd340800000000000000
+      internalID: 4889844675783243918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_59
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 99
+        width: 9
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40ab1e62b5ebd1bf0800000000000000
+      internalID: -351915897161401852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_60
+      rect:
+        serializedVersion: 2
+        x: 733
+        y: 27
+        width: 10
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06aeaf73d30f83200800000000000000
+      internalID: 160141932494514784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_61
+      rect:
+        serializedVersion: 2
+        x: 783
+        y: 50
+        width: 14
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bf41fa73bf6a2af0800000000000000
+      internalID: -420400798553256016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_62
+      rect:
+        serializedVersion: 2
+        x: 955
+        y: 52
+        width: 10
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c9dcb40463589160800000000000000
+      internalID: 7032462507180349892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_63
+      rect:
+        serializedVersion: 2
+        x: 1182
+        y: 133
+        width: 8
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e895cb1a9ba55acd0800000000000000
+      internalID: -2547530260879222386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_64
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 14
+        width: 9
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54eb59ea14b0231c0800000000000000
+      internalID: -4525542298824098235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_65
+      rect:
+        serializedVersion: 2
+        x: 1230
+        y: 40
+        width: 9
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0942ad9337c4d820800000000000000
+      internalID: 2942195481081694478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_66
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 8
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1340917ad71feda40800000000000000
+      internalID: 5395014925613073457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_67
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 83
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7abf537b8a22e450800000000000000
+      internalID: 6116498022347029116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_68
+      rect:
+        serializedVersion: 2
+        x: 865
+        y: 34
+        width: 20
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00d3c5d29493daec0800000000000000
+      internalID: -3554121544469037824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_69
+      rect:
+        serializedVersion: 2
+        x: 932
+        y: 98
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff952ea79ba8342a0800000000000000
+      internalID: -6754402486890374657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_70
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 6
+        width: 8
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e773352129ce22810800000000000000
+      internalID: 1739212518235256702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_71
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 34
+        width: 9
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73bede1b2b8951330800000000000000
+      internalID: 3681016163702008631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_72
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 0
+        width: 10
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f4263f967d7693c0800000000000000
+      internalID: -4353154041376267020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_73
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 55
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a6433b2ff1745640800000000000000
+      internalID: 5067800821454030505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_74
+      rect:
+        serializedVersion: 2
+        x: 968
+        y: 59
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c79bab23079ca31e0800000000000000
+      internalID: -2217238382801929860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_75
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 5
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0c17cf44ab60f5b0800000000000000
+      internalID: -5336647204976780278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_76
+      rect:
+        serializedVersion: 2
+        x: 466
+        y: 0
+        width: 9
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 620926d9beb5ddda0800000000000000
+      internalID: -5918473267779039194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FoggedGlassStreakOverlay_77
+      rect:
+        serializedVersion: 2
+        x: 715
+        y: 0
+        width: 8
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c64fbbb4baae59910800000000000000
+      internalID: 1843637643909002348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      FoggedGlassStreakOverlay_0: 3779623652210423119
+      FoggedGlassStreakOverlay_1: -8517697432130450130
+      FoggedGlassStreakOverlay_10: 6900274760948048677
+      FoggedGlassStreakOverlay_11: 4427216872480772323
+      FoggedGlassStreakOverlay_12: 5889243872625796220
+      FoggedGlassStreakOverlay_13: -6188245635057042193
+      FoggedGlassStreakOverlay_14: 5384752703174294536
+      FoggedGlassStreakOverlay_15: 7957166751984448657
+      FoggedGlassStreakOverlay_16: 8218389786549162802
+      FoggedGlassStreakOverlay_17: -1131455322385901919
+      FoggedGlassStreakOverlay_18: 7720383812286669546
+      FoggedGlassStreakOverlay_19: -1927311152100513992
+      FoggedGlassStreakOverlay_2: -1240134595470473194
+      FoggedGlassStreakOverlay_20: -8850739382195667061
+      FoggedGlassStreakOverlay_21: -2200526538800384107
+      FoggedGlassStreakOverlay_22: 597284172944686164
+      FoggedGlassStreakOverlay_23: -7252921817484595972
+      FoggedGlassStreakOverlay_24: -3084627669097939161
+      FoggedGlassStreakOverlay_25: -2582934452288109102
+      FoggedGlassStreakOverlay_26: 2768317249225741158
+      FoggedGlassStreakOverlay_27: -5403415361145323209
+      FoggedGlassStreakOverlay_28: 8841327395645655158
+      FoggedGlassStreakOverlay_29: -8756979531184655212
+      FoggedGlassStreakOverlay_3: -4822135153351145760
+      FoggedGlassStreakOverlay_30: -6694616442550865711
+      FoggedGlassStreakOverlay_31: -4423337383047526724
+      FoggedGlassStreakOverlay_32: 708172825976716207
+      FoggedGlassStreakOverlay_33: -7162392648893738455
+      FoggedGlassStreakOverlay_34: 4460759067261820308
+      FoggedGlassStreakOverlay_35: 7624250684227859041
+      FoggedGlassStreakOverlay_36: -9058429605783726287
+      FoggedGlassStreakOverlay_37: 7202705281632937240
+      FoggedGlassStreakOverlay_38: 5629706634600398199
+      FoggedGlassStreakOverlay_39: -5452990017930968152
+      FoggedGlassStreakOverlay_4: -593586278357285514
+      FoggedGlassStreakOverlay_40: 4597524157138991554
+      FoggedGlassStreakOverlay_41: -4857997924201969531
+      FoggedGlassStreakOverlay_42: 9091803794685819121
+      FoggedGlassStreakOverlay_43: 5100254146444476436
+      FoggedGlassStreakOverlay_44: 7412510464083459282
+      FoggedGlassStreakOverlay_45: -8471164473239956563
+      FoggedGlassStreakOverlay_46: 1219775624597885447
+      FoggedGlassStreakOverlay_47: -2487875171189297562
+      FoggedGlassStreakOverlay_48: -8337247634452713439
+      FoggedGlassStreakOverlay_49: -4974462622013916225
+      FoggedGlassStreakOverlay_5: 5456737055474912125
+      FoggedGlassStreakOverlay_50: 5447908095072051576
+      FoggedGlassStreakOverlay_51: -4215958875327860452
+      FoggedGlassStreakOverlay_52: -7371743114711694547
+      FoggedGlassStreakOverlay_53: 5198139218264773489
+      FoggedGlassStreakOverlay_54: -4545637412855698136
+      FoggedGlassStreakOverlay_55: -5780306879875309352
+      FoggedGlassStreakOverlay_56: 8043137941348751962
+      FoggedGlassStreakOverlay_57: -1825050208589550032
+      FoggedGlassStreakOverlay_58: 4889844675783243918
+      FoggedGlassStreakOverlay_59: -351915897161401852
+      FoggedGlassStreakOverlay_6: -5526112444162739341
+      FoggedGlassStreakOverlay_60: 160141932494514784
+      FoggedGlassStreakOverlay_61: -420400798553256016
+      FoggedGlassStreakOverlay_62: 7032462507180349892
+      FoggedGlassStreakOverlay_63: -2547530260879222386
+      FoggedGlassStreakOverlay_64: -4525542298824098235
+      FoggedGlassStreakOverlay_65: 2942195481081694478
+      FoggedGlassStreakOverlay_66: 5395014925613073457
+      FoggedGlassStreakOverlay_67: 6116498022347029116
+      FoggedGlassStreakOverlay_68: -3554121544469037824
+      FoggedGlassStreakOverlay_69: -6754402486890374657
+      FoggedGlassStreakOverlay_7: 8170649253904116397
+      FoggedGlassStreakOverlay_70: 1739212518235256702
+      FoggedGlassStreakOverlay_71: 3681016163702008631
+      FoggedGlassStreakOverlay_72: -4353154041376267020
+      FoggedGlassStreakOverlay_73: 5067800821454030505
+      FoggedGlassStreakOverlay_74: -2217238382801929860
+      FoggedGlassStreakOverlay_75: -5336647204976780278
+      FoggedGlassStreakOverlay_76: -5918473267779039194
+      FoggedGlassStreakOverlay_77: 1843637643909002348
+      FoggedGlassStreakOverlay_8: 5828648294692909580
+      FoggedGlassStreakOverlay_9: 668054963552569125
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,6 @@
+﻿<Solution>
+  <Project Path="Glassfall.EditorTests.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Glassfall.SpawnLogic.csproj" />
+</Solution>
