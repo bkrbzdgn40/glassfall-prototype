@@ -173,7 +173,7 @@ namespace Glassfall.Presentation
                 bool phaseChanged = phase != _lastPhase;
                 bool finalEncounterActivated =
                     phase == MicroRunPhase.Encounter &&
-                    runController.IsCurrentWorldFinalEncounter &&
+                    runController.IsRunFinalEncounter &&
                     !awaitingEncounterArrival &&
                     (phaseChanged || _wasAwaitingEncounterArrival);
                 if (finalEncounterActivated)
@@ -223,16 +223,27 @@ namespace Glassfall.Presentation
             GUI.color = new Color(0.02f, 0.07f, 0.12f, 0.84f * alpha);
             GUI.Box(box, GUIContent.none);
             GUI.color = new Color(0.78f, 1f, 0.92f, alpha);
+            bool worldCompleted = runController.IsWorldCompletionBeat;
+            string completedWorld = FormatWorldName(
+                runController.CurrentWorldId);
+            string headline = worldCompleted
+                ? completedWorld + " STABILIZED"
+                : "ENCOUNTER CLEARED";
+            string followup = runController.IsComplete
+                ? "RUN COMPLETE"
+                : worldCompleted && runController.HasNextWorldSegment
+                    ? FormatWorldName(runController.NextWorldId) +
+                      " SIGNAL ACQUIRED"
+                    : "REWARD READY";
+
             GUI.Label(
                 new Rect(box.x + 20f, box.y + 18f, box.width - 40f, 44f),
-                "ENCOUNTER CLEARED",
+                headline,
                 _beatStyle);
             GUI.color = new Color(0.80f, 0.90f, 1f, alpha);
             GUI.Label(
                 new Rect(box.x + 20f, box.y + 64f, box.width - 40f, 24f),
-                runController.IsComplete
-                    ? "WINDOW STABILIZED"
-                    : "REWARD READY",
+                followup,
                 _progressStyle);
             GUI.color = previousColor;
         }
@@ -430,14 +441,17 @@ namespace Glassfall.Presentation
                     break;
 
                 case MicroRunPhase.Encounter:
-                    bool finalEncounter =
+                    bool worldFinalEncounter =
                         runController.IsCurrentWorldFinalEncounter;
+                    bool runFinalEncounter = runController.IsRunFinalEncounter;
                     bool awaitingArrival =
                         runController.IsAwaitingEncounterArrival;
                     if (awaitingArrival)
                     {
-                        title = finalEncounter
+                        title = runFinalEncounter
                             ? "REACH FINAL REGION"
+                            : worldFinalEncounter
+                                ? "REACH WINDOW CORE"
                             : $"REACH REGION {runController.CurrentWorldEncounter}/" +
                               $"{runController.CurrentWorldEncounterCount}";
                         body =
@@ -447,10 +461,12 @@ namespace Glassfall.Presentation
                     }
                     else
                     {
-                        if (finalEncounter)
+                        if (runFinalEncounter)
                             DrawFinalPressureAccent();
-                        title = finalEncounter
+                        title = runFinalEncounter
                             ? "FINAL PRESSURE"
+                            : worldFinalEncounter
+                                ? "WINDOW PRESSURE"
                             : $"HUNT {runController.CurrentWorldEncounter}/" +
                               $"{runController.CurrentWorldEncounterCount}";
                         body =
@@ -465,16 +481,26 @@ namespace Glassfall.Presentation
                     title = "RECOVER MASS";
                     body =
                         GetWindowStabilityText() + "\n" +
-                        $"Rebuild +{Mathf.Max(0f, runController.PhaseTargetMass - runController.PhaseStartMass):0.0} mass and purify while you travel to the next anchor.\n" +
+                        $"Rebuild +{Mathf.Max(0f, runController.PhaseTargetMass - runController.PhaseStartMass):0.0} mass and purify while you travel " +
+                        (runController.IsCurrentWorldComplete &&
+                         runController.HasNextWorldSegment
+                            ? $"toward {FormatWorldName(runController.NextWorldId)}.\n"
+                            : "to the next anchor.\n") +
                         $"Recovered {runController.PhaseMassGain:0.0} · " +
                         $"{runController.RecoveryRemaining:0.0}s fallback";
                     break;
 
                 case MicroRunPhase.Intermission:
-                    title = "RECOVERY COMPLETE";
-                    body =
-                        GetWindowStabilityText() + "\n" +
-                        $"Next hunt in {runController.IntermissionRemaining:0.0}s";
+                    bool handingOff = runController.IsCurrentWorldComplete &&
+                        runController.HasNextWorldSegment;
+                    title = handingOff
+                        ? "WINDOW STABILIZED"
+                        : "RECOVERY COMPLETE";
+                    body = GetWindowStabilityText() + "\n" +
+                        (handingOff
+                            ? $"Entering {FormatWorldName(runController.NextWorldId)} in " +
+                              $"{runController.IntermissionRemaining:0.0}s"
+                            : $"Next hunt in {runController.IntermissionRemaining:0.0}s");
                     break;
 
                 default:
@@ -563,7 +589,7 @@ namespace Glassfall.Presentation
 
             GUI.Label(
                 new Rect(box.x + 24f, box.y + 24f, box.width - 48f, 54f),
-                "WINDOW STABILIZED",
+                "RUN COMPLETE",
                 _completeTitle);
 
             string buildName = buildController != null
@@ -575,6 +601,7 @@ namespace Glassfall.Presentation
 
             GUI.Label(
                 new Rect(box.x + 34f, box.y + 92f, box.width - 68f, 86f),
+                $"{FormatWorldName(runController.CurrentWorldId)} STABILIZED\n" +
                 $"{completedRunEncounters} / {completedRunEncounters} RESONANCE ANCHORS STABILIZED\n" +
                 $"BUILD: {buildName}\n" +
                 $"TIME: {FormatTime(runController.ElapsedSeconds)}",
@@ -590,6 +617,13 @@ namespace Glassfall.Presentation
                 return runEncounterCount;
 
             return Mathf.Max(1, currentWorldEncounterCount);
+        }
+
+        public static string FormatWorldName(string worldId)
+        {
+            return string.IsNullOrWhiteSpace(worldId)
+                ? "WINDOW"
+                : worldId.Trim().Replace('_', ' ');
         }
 
         private void DrawFinalPressureAccent()

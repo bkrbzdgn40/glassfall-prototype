@@ -27,6 +27,10 @@ namespace Glassfall.Tests
             "Glassfall.Presentation.FoggedWindowWorldBackground, Assembly-CSharp";
         private const string RunOverlayTypeName =
             "Glassfall.Presentation.MicroRunOverlay, Assembly-CSharp";
+        private const string WetnessFieldTypeName =
+            "Glassfall.Gameplay.Wetness.WetnessField, Assembly-CSharp";
+        private const string WorldRouterTypeName =
+            "Glassfall.Presentation.WorldPresentationRouter, Assembly-CSharp";
 
         [Test]
         public void RunProgressMovesThroughPreparationBeforeResonance()
@@ -848,6 +852,198 @@ namespace Glassfall.Tests
         }
 
         [Test]
+        public void M26WorldSequenceSeparatesWorldCompletionFromRunCompletion()
+        {
+            GameObject gameObject = new GameObject("M26WorldSequenceTest");
+            try
+            {
+                Type controllerType = Type.GetType(ControllerTypeName, true);
+                Type segmentType = Type.GetType(WorldSegmentTypeName, true);
+                Type movementModeType = Type.GetType(
+                    MovementModeTypeName,
+                    true);
+                Component controller = gameObject.AddComponent(controllerType);
+                ConfigureM26Segments(
+                    controller,
+                    segmentType,
+                    movementModeType);
+
+                object progress = CreateProgress(6);
+                Invoke(progress, "SelectBuild");
+                Invoke(progress, "CompletePreparation");
+                Invoke(progress, "CompleteResonance");
+                SetPrivateField(controller, "_progress", progress);
+
+                Assert.That((int)GetProperty(controller, "EncounterCount"),
+                    Is.EqualTo(6));
+                Assert.That((int)GetProperty(controller, "WorldSegmentCount"),
+                    Is.EqualTo(2));
+                Assert.That((bool)GetProperty(controller, "HasNextWorldSegment"),
+                    Is.True);
+                Assert.That(GetProperty(controller, "NextWorldId").ToString(),
+                    Is.EqualTo("NEON_WINDOW"));
+
+                CompleteEncounterCycle(progress);
+                CompleteEncounterCycle(progress);
+                Assert.That((int)GetProperty(controller, "CurrentWorldEncounter"),
+                    Is.EqualTo(3));
+                Assert.That((bool)GetProperty(controller, "IsRunFinalEncounter"),
+                    Is.False);
+
+                SetPrivateField(
+                    controller,
+                    "_encounterCompletionBeatRemaining",
+                    0.8f);
+                Assert.That((bool)Invoke(progress, "DefeatEncounter"), Is.True);
+                Assert.That(GetProperty(progress, "Phase").ToString(),
+                    Is.EqualTo("RewardChoice"));
+                Assert.That((bool)GetProperty(controller, "IsWorldCompletionBeat"),
+                    Is.True);
+
+                Assert.That((bool)Invoke(progress, "CompleteRewardChoice"), Is.True);
+                Assert.That((bool)Invoke(progress, "CompleteRecovery"), Is.True);
+                Assert.That((bool)Invoke(progress, "FinishIntermission"), Is.True);
+                Assert.That(GetProperty(controller, "CurrentWorldId").ToString(),
+                    Is.EqualTo("NEON_WINDOW"));
+                Assert.That((int)GetProperty(controller, "CurrentWorldEncounter"),
+                    Is.EqualTo(1));
+
+                CompleteEncounterCycle(progress);
+                CompleteEncounterCycle(progress);
+                Assert.That((bool)GetProperty(controller, "IsRunFinalEncounter"),
+                    Is.True);
+                SetPrivateField(
+                    controller,
+                    "_encounterCompletionBeatRemaining",
+                    0.8f);
+                Assert.That((bool)Invoke(progress, "DefeatEncounter"), Is.True);
+                Assert.That(GetProperty(progress, "Phase").ToString(),
+                    Is.EqualTo("Complete"));
+                Assert.That((bool)GetProperty(controller, "IsComplete"), Is.True);
+                Assert.That((bool)GetProperty(controller, "IsWorldCompletionBeat"),
+                    Is.True);
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(gameObject);
+            }
+        }
+
+        [Test]
+        public void WorldHandoffClearsWetnessButPreservesContamination()
+        {
+            GameObject gameObject = new GameObject("M26WorldHandoffTest");
+            try
+            {
+                Type wetnessType = Type.GetType(WetnessFieldTypeName, true);
+                Type contaminationType = Type.GetType(
+                    ContaminationTypeName,
+                    true);
+                Type controllerType = Type.GetType(ControllerTypeName, true);
+                Type segmentType = Type.GetType(WorldSegmentTypeName, true);
+                Type movementModeType = Type.GetType(
+                    MovementModeTypeName,
+                    true);
+
+                Component wetness = gameObject.AddComponent(wetnessType);
+                Component contamination = gameObject.AddComponent(contaminationType);
+                Component controller = gameObject.AddComponent(controllerType);
+                InvokeNonPublic(wetness, "Initialize");
+                ConfigureM26Segments(
+                    controller,
+                    segmentType,
+                    movementModeType);
+                Invoke(controller, "ConfigureWorldHandoff", wetness);
+
+                Invoke(contamination, "Configure");
+                float contaminationBefore = (float)Invoke(
+                    contamination,
+                    "ApplyArcHunterHit",
+                    false);
+                Invoke(wetness, "DepositWorld", Vector2.zero, 1f, 1f);
+                Assert.That((float)Invoke(wetness, "SampleWorld", Vector2.zero),
+                    Is.GreaterThan(0f));
+
+                object progress = CreateProgress(6);
+                Invoke(progress, "SelectBuild");
+                Invoke(progress, "CompletePreparation");
+                Invoke(progress, "CompleteResonance");
+                CompleteEncounterCycle(progress);
+                CompleteEncounterCycle(progress);
+                CompleteEncounterCycle(progress);
+                SetPrivateField(controller, "_progress", progress);
+                SetPrivateField(controller, "_activeWorldSegmentIndex", 0);
+
+                InvokeNonPublic(controller, "ApplyWorldHandoffIfNeeded");
+
+                Assert.That((float)Invoke(wetness, "SampleWorld", Vector2.zero),
+                    Is.EqualTo(0f));
+                Assert.That((float)GetProperty(contamination, "Value01"),
+                    Is.EqualTo(contaminationBefore));
+                Assert.That((int)GetProperty(controller, "WorldHandoffCount"),
+                    Is.EqualTo(1));
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(gameObject);
+            }
+        }
+
+        [Test]
+        public void PresentationRouterActivatesOnlyTheCurrentWorld()
+        {
+            GameObject gameObject = new GameObject("M26WorldRouterTest");
+            GameObject foggedRoot = new GameObject("FoggedWindowWorldV1");
+            GameObject neonRoot = new GameObject("NeonWindowWorldV1");
+            try
+            {
+                Type controllerType = Type.GetType(ControllerTypeName, true);
+                Type segmentType = Type.GetType(WorldSegmentTypeName, true);
+                Type movementModeType = Type.GetType(
+                    MovementModeTypeName,
+                    true);
+                Type routerType = Type.GetType(WorldRouterTypeName, true);
+                Component controller = gameObject.AddComponent(controllerType);
+                ConfigureM26Segments(
+                    controller,
+                    segmentType,
+                    movementModeType);
+
+                object progress = CreateProgress(6);
+                Invoke(progress, "SelectBuild");
+                Invoke(progress, "CompletePreparation");
+                Invoke(progress, "CompleteResonance");
+                SetPrivateField(controller, "_progress", progress);
+
+                Component router = gameObject.AddComponent(routerType);
+                Invoke(
+                    router,
+                    "Configure",
+                    controller,
+                    foggedRoot,
+                    neonRoot,
+                    0,
+                    1);
+                Assert.That(foggedRoot.activeSelf, Is.True);
+                Assert.That(neonRoot.activeSelf, Is.False);
+
+                CompleteEncounterCycle(progress);
+                CompleteEncounterCycle(progress);
+                CompleteEncounterCycle(progress);
+                InvokeNonPublic(router, "Update");
+
+                Assert.That(foggedRoot.activeSelf, Is.False);
+                Assert.That(neonRoot.activeSelf, Is.True);
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(gameObject);
+                UnityEngine.Object.DestroyImmediate(foggedRoot);
+                UnityEngine.Object.DestroyImmediate(neonRoot);
+            }
+        }
+
+        [Test]
         public void FoggedBackgroundStopsFollowingProgressAfterWorldOne()
         {
             GameObject gameObject = new GameObject("WorldBoundBackgroundTest");
@@ -1112,6 +1308,47 @@ namespace Glassfall.Tests
                 movementModes);
         }
 
+        private static void ConfigureM26Segments(
+            object controller,
+            Type segmentType,
+            Type movementModeType)
+        {
+            object fogged = CreateWorldSegment(
+                segmentType,
+                movementModeType,
+                "FOGGED_WINDOW",
+                new[]
+                {
+                    new Vector2(-11f, -5f),
+                    new Vector2(0f, 7f),
+                    new Vector2(13f, 2f)
+                },
+                new[] { "Chase", "Strafe", "WetRoutePressure" });
+            object neon = CreateWorldSegment(
+                segmentType,
+                movementModeType,
+                "NEON_WINDOW",
+                new[]
+                {
+                    new Vector2(-12f, 6.2f),
+                    new Vector2(6.8f, -6.4f),
+                    new Vector2(14.2f, 5.5f)
+                },
+                new[] { "Strafe", "WetRoutePressure", "Chase" });
+            Array segments = Array.CreateInstance(segmentType, 2);
+            segments.SetValue(fogged, 0);
+            segments.SetValue(neon, 1);
+            Invoke(controller, "ConfigureWorldSegments", segments);
+        }
+
+        private static void CompleteEncounterCycle(object progress)
+        {
+            Assert.That((bool)Invoke(progress, "DefeatEncounter"), Is.True);
+            Assert.That((bool)Invoke(progress, "CompleteRewardChoice"), Is.True);
+            Assert.That((bool)Invoke(progress, "CompleteRecovery"), Is.True);
+            Assert.That((bool)Invoke(progress, "FinishIntermission"), Is.True);
+        }
+
         private static object CreateProgress(int encounterCount)
         {
             Type type = Type.GetType(ProgressTypeName, true);
@@ -1168,6 +1405,18 @@ namespace Glassfall.Tests
                 BindingFlags.Static | BindingFlags.Public);
             Assert.That(method, Is.Not.Null, methodName);
             return method.Invoke(null, arguments);
+        }
+
+        private static object InvokeNonPublic(
+            object instance,
+            string methodName,
+            params object[] arguments)
+        {
+            MethodInfo method = instance.GetType().GetMethod(
+                methodName,
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.That(method, Is.Not.Null, methodName);
+            return method.Invoke(instance, arguments);
         }
 
         private static object GetProperty(

@@ -1,6 +1,8 @@
 # Glassfall Prototype
 
-Glassfall is a 2D top-down Unity action-roguelike prototype centered on water-droplet movement, mass, split/re-merge control, wet trails, link combat, contamination, encounter pacing, and run-defining rewards.
+Glassfall is a 2D top-down Unity action-roguelike prototype centered on
+water-droplet movement, mass, split/re-merge control, wet trails, link combat,
+contamination, encounter pacing, and run-defining rewards.
 
 ## Requirements
 
@@ -15,9 +17,11 @@ Glassfall is a 2D top-down Unity action-roguelike prototype centered on water-dr
 3. Open `Assets/Glassfall/Scenes/Prototype.unity`.
 4. Enter Play Mode.
 
-The repository contains the Unity source project only. Generated folders such as `Library`, `Temp`, `Logs`, and `Builds` are intentionally excluded.
+The public repository contains the Unity source project, including the M26/M27
+world presentation and Neon Window video background. Generated folders such as
+`Library`, `Temp`, `Logs`, and `Builds` are intentionally excluded.
 
-## Validation state
+## Public source scope
 
-This public snapshot corresponds to the validated pre-M26 state. The final EditMode validation completed with 135 passing tests and the Windows Development Build completed successfully.
-
+Development handoff notes, recovery snapshots, patch manifests, local audit
+reports, and generated runtime evidence are not part of the public source tree.

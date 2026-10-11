@@ -229,10 +229,28 @@ namespace Glassfall.Presentation
             _videoFailureFallbackActive = false;
             _videoPrepareStartedAt = -1f;
 
-            if (_videoPlayer != null && _videoPlayer.isPlaying)
-                _videoPlayer.Stop();
+            if (_videoPlayer != null)
+            {
+                if (_videoPlayer.isPlaying || _videoPlayer.isPrepared)
+                    _videoPlayer.Stop();
+                _videoPlayer.enabled = false;
+            }
+
+            ResetWorldPresentationState();
 
             ReleaseRuntimeVideoResources();
+        }
+
+        private void ResetWorldPresentationState()
+        {
+            _highestCompletedEncounterCount = 0;
+            _lastWorldStartEncounter = -1;
+            _lastWorldEncounterCount = -1;
+            _hasBlurState = false;
+            CurrentBlurPhase = 0;
+            _currentBlurRadius = initialBlurRadiusPixels;
+            _currentBlurMix = initialBlurMix;
+            _nextVisualRefreshTime = 0f;
         }
 
         private void LateUpdate()

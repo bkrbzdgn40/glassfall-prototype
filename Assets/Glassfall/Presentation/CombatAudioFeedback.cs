@@ -75,6 +75,7 @@ namespace Glassfall.Presentation
         private float _lastCleansePulse01;
         private float _lastRewardSelectionTime = -1f;
         private bool _wasEncounterCompletionBeat;
+        private bool _wasWorldCompletionBeat;
         private bool _wasRunComplete;
         private float _lastContaminationSoundTime = -100f;
         private float _lastCleanseSoundTime = -100f;
@@ -338,8 +339,16 @@ namespace Glassfall.Presentation
 
             bool isComplete = runController.IsComplete;
             bool completionBeat = runController.IsEncounterCompletionBeat;
+            bool worldCompletionBeat = runController.IsWorldCompletionBeat;
 
             if (isComplete && !_wasRunComplete)
+            {
+                PlayOneShot(
+                    gameplayOneShotSource,
+                    windowStabilizedClip,
+                    windowStabilizedVolume);
+            }
+            else if (worldCompletionBeat && !_wasWorldCompletionBeat)
             {
                 PlayOneShot(
                     gameplayOneShotSource,
@@ -356,6 +365,7 @@ namespace Glassfall.Presentation
 
             _wasRunComplete = isComplete;
             _wasEncounterCompletionBeat = completionBeat;
+            _wasWorldCompletionBeat = worldCompletionBeat;
         }
 
         private void PlayOneShot(
@@ -417,6 +427,8 @@ namespace Glassfall.Presentation
                 : -1f;
             _wasEncounterCompletionBeat = runController != null &&
                 runController.IsEncounterCompletionBeat;
+            _wasWorldCompletionBeat = runController != null &&
+                runController.IsWorldCompletionBeat;
             _wasRunComplete = runController != null &&
                 runController.IsComplete;
             _conductionEnvelope = 0f;

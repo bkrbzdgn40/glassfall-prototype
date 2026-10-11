@@ -3,4 +3,5 @@
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Glassfall.SpawnLogic.csproj" />
+  <Project Path="Glassfall.PlayModeTests.csproj" />
 </Solution>

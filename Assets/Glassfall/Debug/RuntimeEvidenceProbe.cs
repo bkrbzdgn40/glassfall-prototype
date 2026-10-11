@@ -1,3 +1,6 @@
+using Glassfall.Gameplay.Combat;
+using Glassfall.Gameplay.Droplet;
+using Glassfall.Gameplay.Rewards;
 using Glassfall.Gameplay.Run;
 using UnityEngine;
 
@@ -36,6 +39,10 @@ namespace Glassfall.Diagnostics
         [Header("Authoritative Runtime Source")]
         [SerializeField] private MicroRunController runController;
 
+        private DropletSplitSystem _splitSystem;
+        private SplitLinkCombat _linkCombat;
+        private MidRunRewardController _rewardController;
+
         [Header("Capture")]
         [SerializeField] private bool enableBinaryProfilerLogInDevelopmentBuild = true;
         [SerializeField] private bool captureRunTransitions = true;
@@ -60,6 +67,7 @@ namespace Glassfall.Diagnostics
         private bool _sceneReloadRequested;
         private bool _automatedSmokeEnabled;
         private float _automatedSmokeActionAt;
+        private bool _qualityReportWritten;
 
         private MicroRunPhase _lastPhase;
         private int _lastEncounter;
@@ -76,6 +84,7 @@ namespace Glassfall.Diagnostics
         private string _sessionDirectory;
         private string _binaryProfilerPath;
         private int _sceneRunNumber;
+        private RunQualityTelemetrySession _qualitySession;
 
         public string SessionDirectory => _sessionDirectory;
         public int SceneRunNumber => _sceneRunNumber;
@@ -126,6 +135,13 @@ namespace Glassfall.Diagnostics
             return Mathf.Max(0, currentRunNumber) + 1;
         }
 
+        public static bool IsQualityTelemetryEnabledFor(
+            bool isEditor,
+            bool isDebugBuild)
+        {
+            return isEditor || isDebugBuild;
+        }
+
         private void Awake()
         {
             if (runController == null)
@@ -147,6 +163,13 @@ namespace Glassfall.Diagnostics
                 EvidenceFolderName,
                 _processCaptureId);
             Directory.CreateDirectory(_sessionDirectory);
+            _qualitySession = new RunQualityTelemetrySession(
+                _processCaptureId + "-run-" +
+                _sceneRunNumber.ToString(
+                    "00",
+                    CultureInfo.InvariantCulture));
+            ResolveQualitySources();
+            SubscribeQualitySources();
 
             _showOverlay = showOverlayAtStartup;
             _automatedSmokeEnabled = HasCommandLineArgument(
@@ -183,6 +206,8 @@ namespace Glassfall.Diagnostics
             if (captureRunTransitions)
                 CaptureTransitionsIfNeeded();
 
+            UpdateRunQualityTelemetry();
+
             if (runController != null &&
                 (runController.IsComplete || runController.IsFailed) &&
                 !_terminalSnapshotCaptured)
@@ -193,6 +218,8 @@ namespace Glassfall.Diagnostics
                         ? "run_complete"
                         : "run_failed");
                 WriteReport();
+                FinalizeRunQualityTelemetry(
+                    runController.IsComplete ? "Complete" : "Failed");
             }
 
             if (_automatedSmokeEnabled &&
@@ -227,6 +254,7 @@ namespace Glassfall.Diagnostics
         private void OnApplicationQuit()
         {
             _isQuitting = true;
+            FinalizeRunQualityTelemetry("Incomplete");
             CaptureSnapshot("application_quit");
             WriteReport();
             StopBinaryProfilerLog();
@@ -235,6 +263,9 @@ namespace Glassfall.Diagnostics
         private void OnDestroy()
         {
             if (!_isQuitting && !_sceneReloadRequested)
+                FinalizeRunQualityTelemetry("Incomplete");
+
+            if (!_isQuitting && !_sceneReloadRequested)
             {
                 CaptureSnapshot("probe_destroyed");
                 WriteReport();
@@ -242,6 +273,7 @@ namespace Glassfall.Diagnostics
 
             StopBinaryProfilerLog();
             DisposeRecorders();
+            UnsubscribeQualitySources();
         }
 
         private static DeveloperControlState ReadDeveloperControls()
@@ -297,6 +329,195 @@ namespace Glassfall.Diagnostics
             _initialGc0 = GC.CollectionCount(0);
             _initialGc1 = GC.CollectionCount(1);
             _initialGc2 = GC.CollectionCount(2);
+        }
+
+        private void ResolveQualitySources()
+        {
+            if (_splitSystem == null)
+                _splitSystem = FindAnyObjectByType<DropletSplitSystem>();
+            if (_linkCombat == null)
+                _linkCombat = FindAnyObjectByType<SplitLinkCombat>();
+            if (_rewardController == null)
+            {
+                _rewardController =
+                    FindAnyObjectByType<MidRunRewardController>();
+            }
+        }
+
+        private void SubscribeQualitySources()
+        {
+            if (_splitSystem != null)
+            {
+                _splitSystem.SplitPerformed += OnSplitPerformed;
+                _splitSystem.ReMergePerformed += OnReMergePerformed;
+            }
+
+            if (_rewardController != null)
+            {
+                _rewardController.RewardChoiceOffered +=
+                    OnRewardChoiceOffered;
+                _rewardController.RewardSelected += OnRewardSelected;
+            }
+        }
+
+        private void UnsubscribeQualitySources()
+        {
+            if (_splitSystem != null)
+            {
+                _splitSystem.SplitPerformed -= OnSplitPerformed;
+                _splitSystem.ReMergePerformed -= OnReMergePerformed;
+            }
+
+            if (_rewardController != null)
+            {
+                _rewardController.RewardChoiceOffered -=
+                    OnRewardChoiceOffered;
+                _rewardController.RewardSelected -= OnRewardSelected;
+            }
+        }
+
+        private void UpdateRunQualityTelemetry()
+        {
+            if (_qualitySession == null || runController == null)
+                return;
+
+            double now = Time.realtimeSinceStartupAsDouble;
+            if (!_qualitySession.HasStarted)
+            {
+                if (runController.Phase == MicroRunPhase.ChooseBuild)
+                    return;
+
+                _qualitySession.Begin(
+                    now,
+                    runController.CurrentWorldId,
+                    runController.CurrentWorldSegmentIndex);
+            }
+
+            _qualitySession.ObserveState(
+                now,
+                runController.Phase.ToString(),
+                runController.CurrentWorldId,
+                runController.CurrentWorldSegmentIndex,
+                runController.CurrentEncounter,
+                runController.CurrentWorldEncounter,
+                runController.Contamination01,
+                runController.CurrentCombinedMass);
+
+            bool applyingLinkDamage = _linkCombat != null &&
+                _linkCombat.IsApplyingLinkDamage;
+            bool applyingConduction = applyingLinkDamage &&
+                _linkCombat.Conductivity01 > 0.001f;
+            _qualitySession.SampleUsage(
+                Time.unscaledDeltaTime,
+                _splitSystem != null && _splitSystem.IsSplit,
+                applyingLinkDamage,
+                applyingConduction,
+                _linkCombat != null
+                    ? _linkCombat.CurrentAppliedOutputPerSecond
+                    : 0f);
+        }
+
+        private void FinalizeRunQualityTelemetry(string outcome)
+        {
+            if (_qualitySession == null ||
+                !_qualitySession.HasStarted ||
+                _qualitySession.IsFinalized)
+            {
+                return;
+            }
+
+            string failurePhase = runController != null &&
+                                  runController.IsFailed
+                ? runController.FailedFromPhase.ToString()
+                : string.Empty;
+            _qualitySession.FinalizeRun(
+                Time.realtimeSinceStartupAsDouble,
+                outcome,
+                failurePhase,
+                runController != null
+                    ? runController.CurrentWorldId
+                    : string.Empty,
+                runController != null
+                    ? runController.CurrentEncounter
+                    : 0,
+                runController != null
+                    ? runController.Contamination01
+                    : 0f,
+                runController != null
+                    ? runController.CurrentCombinedMass
+                    : 0f);
+            WriteRunQualityReport();
+        }
+
+        private void OnSplitPerformed(SplitResult result)
+        {
+            _qualitySession?.RecordSplitTransition();
+        }
+
+        private void OnReMergePerformed(ReMergeResult result)
+        {
+            _qualitySession?.RecordMergeTransition();
+        }
+
+        private void OnRewardChoiceOffered(
+            int rewardStep,
+            MidRunReward first,
+            MidRunReward second,
+            MidRunReward third)
+        {
+            _qualitySession?.RecordRewardOffer(
+                rewardStep,
+                RewardId(first),
+                RewardId(second),
+                RewardId(third));
+        }
+
+        private void OnRewardSelected(
+            int rewardStep,
+            MidRunReward selected)
+        {
+            _qualitySession?.RecordRewardSelection(
+                rewardStep,
+                RewardId(selected));
+        }
+
+        private static string RewardId(MidRunReward reward)
+        {
+            return reward == MidRunReward.None
+                ? string.Empty
+                : reward.ToString();
+        }
+
+        private void WriteRunQualityReport()
+        {
+            if (_qualityReportWritten ||
+                _qualitySession == null ||
+                !_qualitySession.IsFinalized ||
+                string.IsNullOrWhiteSpace(_sessionDirectory))
+            {
+                return;
+            }
+
+            try
+            {
+                Directory.CreateDirectory(_sessionDirectory);
+                string qualityPath = Path.Combine(
+                    _sessionDirectory,
+                    $"run_{_sceneRunNumber:00}_quality.csv");
+                WriteTextFileAtomically(
+                    qualityPath,
+                    _qualitySession.WriteCsv);
+                _qualityReportWritten = true;
+                Debug.Log(
+                    "[Glassfall M27] Run quality telemetry written to: " +
+                    qualityPath);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning(
+                    "[Glassfall M27] Run quality telemetry could not be " +
+                    "written.\n" + exception);
+            }
         }
 
         private void StartRecorders()

@@ -3,6 +3,7 @@ using Glassfall.Gameplay.Combat;
 using Glassfall.Gameplay.Encounter;
 using Glassfall.Gameplay.Droplet;
 using Glassfall.Gameplay.Rewards;
+using Glassfall.Gameplay.Wetness;
 using UnityEngine;
 
 namespace Glassfall.Gameplay.Run
@@ -19,6 +20,7 @@ namespace Glassfall.Gameplay.Run
         [SerializeField] private MidRunRewardController rewardController;
         [SerializeField] private DropletSplitSystem splitSystem;
         [SerializeField] private ContaminationSystem contaminationSystem;
+        [SerializeField] private WetnessField wetnessField;
 
         [Header("Encounter Route")]
         [SerializeField] private Vector2[] encounterSpawnPositions =
@@ -100,6 +102,8 @@ namespace Glassfall.Gameplay.Run
         private float _failureBeatRemaining;
         private MicroRunPhase _failedFromPhase = MicroRunPhase.ChooseBuild;
         private bool _awaitingEncounterArrival;
+        private int _activeWorldSegmentIndex = -1;
+        private int _worldHandoffCount;
 
         public MicroRunPhase Phase =>
             _progress != null ? _progress.Phase : MicroRunPhase.ChooseBuild;
@@ -110,6 +114,23 @@ namespace Glassfall.Gameplay.Run
         public int WorldSegmentCount =>
             Mathf.Max(1, GetConfiguredWorldSegmentCount());
         public int CurrentWorldSegmentIndex => ResolveCurrentWorldSegmentIndex();
+        public bool HasNextWorldSegment =>
+            GetConfiguredWorldSegmentCount() > 0 &&
+            CurrentWorldSegmentIndex + 1 < WorldSegmentCount;
+        public int NextWorldSegmentIndex => HasNextWorldSegment
+            ? CurrentWorldSegmentIndex + 1
+            : -1;
+        public string NextWorldId
+        {
+            get
+            {
+                return TryGetWorldSegmentCopy(
+                    NextWorldSegmentIndex,
+                    out MicroRunWorldSegment segment)
+                    ? segment.WorldId
+                    : string.Empty;
+            }
+        }
         public string CurrentWorldId
         {
             get
@@ -179,6 +200,17 @@ namespace Glassfall.Gameplay.Run
             Phase == MicroRunPhase.Encounter &&
             CurrentWorldEncounter > 0 &&
             CurrentWorldEncounter == CurrentWorldEncounterCount;
+        public bool IsRunFinalEncounter =>
+            Phase == MicroRunPhase.Encounter &&
+            CurrentEncounter > 0 &&
+            CurrentEncounter == EncounterCount;
+        public bool IsCurrentWorldComplete =>
+            CurrentWorldEncounterCount > 0 &&
+            CompletedCurrentWorldEncounterCount >= CurrentWorldEncounterCount;
+        public bool IsWorldCompletionBeat =>
+            IsEncounterCompletionBeat &&
+            IsWorldFinalEncounter(CurrentEncounter);
+        public int WorldHandoffCount => Mathf.Max(0, _worldHandoffCount);
         public float EncounterCompletionBeatDuration =>
             Mathf.Max(0f, encounterCompletionBeatSeconds);
         public float IntermissionRemaining =>
@@ -304,6 +336,11 @@ namespace Glassfall.Gameplay.Run
             failureBeatSeconds = Mathf.Max(0f, collapseBeatSeconds);
         }
 
+        public void ConfigureWorldHandoff(WetnessField field)
+        {
+            wetnessField = field;
+        }
+
         public void ConfigureEncounterVariation(Vector2[] spawnPositions)
         {
             if (spawnPositions == null || spawnPositions.Length == 0)
@@ -386,6 +423,26 @@ namespace Glassfall.Gameplay.Run
             SyncLegacyEncounterArraysFromWorldSegments();
             currentWorldStartEncounter = 1;
             currentWorldEncounterCount = worldSegments[0].EncounterCount;
+            _activeWorldSegmentIndex = 0;
+            _worldHandoffCount = 0;
+        }
+
+        public bool TryGetWorldSegmentCopy(
+            int segmentIndex,
+            out MicroRunWorldSegment segment)
+        {
+            segment = null;
+            if (worldSegments == null ||
+                segmentIndex < 0 ||
+                segmentIndex >= worldSegments.Length ||
+                worldSegments[segmentIndex] == null ||
+                worldSegments[segmentIndex].EncounterCount <= 0)
+            {
+                return false;
+            }
+
+            segment = worldSegments[segmentIndex].Clone();
+            return true;
         }
 
         public bool TryGetEncounterTargetPosition(
@@ -539,6 +596,8 @@ namespace Glassfall.Gameplay.Run
                 splitSystem = FindAnyObjectByType<DropletSplitSystem>();
             if (contaminationSystem == null)
                 contaminationSystem = FindAnyObjectByType<ContaminationSystem>();
+            if (wetnessField == null)
+                wetnessField = FindAnyObjectByType<WetnessField>();
 
             // Migrate the original 0.28s serialized value without requiring
             // users to recreate or manually edit the existing scene setup.
@@ -550,6 +609,8 @@ namespace Glassfall.Gameplay.Run
             _pendingRewardEncounter = 0;
             _failureBeatRemaining = 0f;
             _failedFromPhase = MicroRunPhase.ChooseBuild;
+            _activeWorldSegmentIndex = ResolveCurrentWorldSegmentIndex();
+            _worldHandoffCount = 0;
             PrepareChooseBuildState();
             UpdateDiagnostics();
         }
@@ -741,6 +802,8 @@ namespace Glassfall.Gameplay.Run
             _failureBeatRemaining = 0f;
             _failedFromPhase = MicroRunPhase.ChooseBuild;
             _awaitingEncounterArrival = false;
+            _activeWorldSegmentIndex = 0;
+            _worldHandoffCount = 0;
             contaminationSystem?.ResetForNewRun();
         }
 
@@ -816,6 +879,7 @@ namespace Glassfall.Gameplay.Run
         private void BeginCurrentEncounter()
         {
             _awaitingEncounterArrival = false;
+            ApplyWorldHandoffIfNeeded();
             ClearMassPhaseTarget();
             ApplyNeutralPopulationPolicy();
 
@@ -844,6 +908,23 @@ namespace Glassfall.Gameplay.Run
             else
                 combat?.SetEncounterActive(false);
             _intermissionRemaining = 0f;
+        }
+
+        private void ApplyWorldHandoffIfNeeded()
+        {
+            int segmentIndex = ResolveCurrentWorldSegmentIndex();
+            if (_activeWorldSegmentIndex < 0)
+            {
+                _activeWorldSegmentIndex = segmentIndex;
+                return;
+            }
+
+            if (segmentIndex == _activeWorldSegmentIndex)
+                return;
+
+            wetnessField?.Clear();
+            _activeWorldSegmentIndex = segmentIndex;
+            _worldHandoffCount++;
         }
 
         private void ActivateCurrentEncounter()
@@ -1043,6 +1124,21 @@ namespace Glassfall.Gameplay.Run
                 completedGlobalEncounter - start + 1,
                 0,
                 total);
+        }
+
+        private bool IsWorldFinalEncounter(int encounterIndex)
+        {
+            if (TryResolveWorldSegment(
+                    encounterIndex,
+                    out MicroRunWorldSegment segment,
+                    out _,
+                    out _,
+                    out int localEncounterIndex))
+            {
+                return localEncounterIndex == segment.EncounterCount - 1;
+            }
+
+            return encounterIndex > 0 && encounterIndex == EncounterCount;
         }
 
         private void ApplyNeutralPopulationPolicy(

@@ -2974,6 +2974,386 @@ Doğrulama:
             }
         }
 
+        [MenuItem(
+            "Tools/Glassfall/Gameplay V1/26 - Setup Neon Window World V1")]
+        public static void SetupNeonWindowWorldV1()
+        {
+            if (!TrySetupNeonWindowWorldV1(showDialogs: true))
+                return;
+
+            if (!Application.isBatchMode)
+            {
+                EditorUtility.DisplayDialog(
+                    "Glassfall - Neon Window World V1",
+                    "M26 kuruldu.\n\n" +
+                    "- FOGGED_WINDOW ve NEON_WINDOW üçer encounter olarak bağlandı.\n" +
+                    "- World 1 route ve movement tuning'i korunarak reuse edildi.\n" +
+                    "- Neon encounter sırası Strafe / Wet-Route / Chase olarak ayarlandı.\n" +
+                    "- World handoff wetness'i temizler; reward, contamination ve mass state korunur.\n" +
+                    "- Fogged ve Neon presentation root'ları mevcut run segmentine göre switch edilir.\n" +
+                    "- Neon backdrop/reflection ve minimum ambience/transition sting runtime procedural üretilir.\n\n" +
+                    "Ctrl+S ile sahneyi kaydet ve tam iki-world run doğrulaması yap.",
+                    "Tamam");
+            }
+        }
+
+        [MenuItem(
+            "Tools/Glassfall/Gameplay V1/27.1 - Apply Neon Video Background")]
+        public static void ApplyNeonVideoBackground()
+        {
+            if (!TryApplyNeonVideoBackground(showDialogs: true))
+                return;
+
+            if (!Application.isBatchMode)
+            {
+                EditorUtility.DisplayDialog(
+                    "Glassfall - Neon Video Background",
+                    "Neon Window video background bağlandı.\n\n" +
+                    "- Video yalnız NEON_WINDOW aktifken hazırlanır ve oynar.\n" +
+                    "- İlk decoded frame gelene kadar video yüzeyi gizlidir.\n" +
+                    "- Decode/prepare hatasında mevcut procedural Neon görünümü korunur.\n" +
+                    "- Kaynak oranı 16:9 korunur; blur uygulanmaz.\n" +
+                    "- Video sesi kapalı ve loop açıktır.\n\n" +
+                    "Ctrl+S ile sahneyi kaydet ve Fogged → Neon geçişini Play Mode'da doğrula.",
+                    "Tamam");
+            }
+        }
+
+        public static void ApplyNeonVideoBackgroundBatch()
+        {
+            const string scenePath =
+                "Assets/Glassfall/Scenes/Prototype.unity";
+            if (!IsPrototypeSceneOpen())
+                EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+
+            if (!TryApplyNeonVideoBackground(showDialogs: false))
+            {
+                throw new System.InvalidOperationException(
+                    "Neon video background setup could not resolve required dependencies.");
+            }
+
+            if (!EditorSceneManager.SaveOpenScenes())
+            {
+                throw new System.InvalidOperationException(
+                    "Neon video background setup could not save Prototype.unity.");
+            }
+        }
+
+        private static bool TryApplyNeonVideoBackground(bool showDialogs)
+        {
+            if (!IsPrototypeSceneOpen())
+            {
+                if (showDialogs)
+                {
+                    EditorUtility.DisplayDialog(
+                        "Glassfall - Neon Video Background kurulamadı",
+                        "Önce Assets/Glassfall/Scenes/Prototype.unity sahnesini aç.",
+                        "Tamam");
+                }
+                return false;
+            }
+
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
+            const string videoPath =
+                "Assets/Glassfall/Art/NeonWindow/NeonWindowBackgroundLoop.mp4";
+            const string shaderPath =
+                "Assets/Glassfall/Presentation/NeonVideoBackground.shader";
+
+            VideoClip videoClip =
+                AssetDatabase.LoadAssetAtPath<VideoClip>(videoPath);
+            Shader shader = AssetDatabase.LoadAssetAtPath<Shader>(shaderPath);
+            GameObject arena = GameObject.Find("Arena");
+            Transform neonTransform = arena != null
+                ? arena.transform.Find("NeonWindowWorldV1")
+                : null;
+            GameObject neonRoot = neonTransform != null
+                ? neonTransform.gameObject
+                : null;
+            Camera mainCamera = Camera.main;
+            MicroRunController run =
+                Object.FindAnyObjectByType<MicroRunController>();
+            GameObject boundsObject = GameObject.Find("NeurtalSpawnArea") ??
+                GameObject.Find("NeutralSpawnArea");
+            Collider2D worldBounds = boundsObject != null
+                ? boundsObject.GetComponent<Collider2D>()
+                : null;
+
+            if (videoClip == null || shader == null || arena == null ||
+                neonRoot == null || mainCamera == null || run == null ||
+                worldBounds == null)
+            {
+                if (showDialogs)
+                {
+                    EditorUtility.DisplayDialog(
+                        "Glassfall - Neon Video Background kurulamadı",
+                        "NeonWindowBackgroundLoop.mp4, NeonVideoBackground shader, " +
+                        "Arena/NeonWindowWorldV1, Main Camera, canonical world bounds " +
+                        "veya MicroRunController bulunamadı.",
+                        "Tamam");
+                }
+                return false;
+            }
+
+            NeonWindowWorldPresentation proceduralPresentation =
+                neonRoot.GetComponent<NeonWindowWorldPresentation>();
+            if (proceduralPresentation == null)
+            {
+                if (showDialogs)
+                {
+                    EditorUtility.DisplayDialog(
+                        "Glassfall - Neon Video Background kurulamadı",
+                        "Mevcut NeonWindowWorldPresentation bulunamadı. " +
+                        "Önce Setup 26'yı çalıştır.",
+                        "Tamam");
+                }
+                return false;
+            }
+
+            GameObject surface = EnsureChild(
+                neonRoot,
+                "NeonWindowVideoSurface");
+            Undo.RecordObject(
+                surface.transform,
+                "Configure Neon Video Surface");
+            surface.transform.localPosition = Vector3.zero;
+            surface.transform.localRotation = Quaternion.identity;
+            surface.transform.localScale = Vector3.one;
+
+            MeshFilter meshFilter = GetOrAddComponent<MeshFilter>(surface);
+            MeshRenderer meshRenderer =
+                GetOrAddComponent<MeshRenderer>(surface);
+            NeonWindowVideoBackground videoBackground =
+                GetOrAddComponent<NeonWindowVideoBackground>(neonRoot);
+            VideoPlayer videoPlayer = GetOrAddComponent<VideoPlayer>(neonRoot);
+
+            Undo.RecordObject(
+                videoBackground,
+                "Configure Neon Video Background");
+            videoBackground.Configure(
+                videoClip,
+                mainCamera,
+                worldBounds,
+                run,
+                meshRenderer,
+                meshFilter,
+                shader,
+                videoOpacity: 0.70f,
+                videoBrightness: 0.86f,
+                videoSaturation: 0.90f,
+                videoTint: new Color(0.90f, 0.96f, 1f, 1f),
+                videoSortingOrder: -1091,
+                videoWorldZ: 6.0f,
+                coverage: 0.995f);
+
+            Undo.RecordObject(videoPlayer, "Configure Neon Video Player");
+            videoPlayer.source = VideoSource.VideoClip;
+            videoPlayer.clip = videoClip;
+            videoPlayer.renderMode = VideoRenderMode.MaterialOverride;
+            videoPlayer.targetMaterialRenderer = meshRenderer;
+            videoPlayer.targetMaterialProperty = "_MainTex";
+            videoPlayer.targetCamera = null;
+            videoPlayer.aspectRatio = VideoAspectRatio.FitInside;
+            videoPlayer.isLooping = true;
+            videoPlayer.playOnAwake = false;
+            videoPlayer.waitForFirstFrame = true;
+            videoPlayer.skipOnDrop = true;
+            videoPlayer.audioOutputMode = VideoAudioOutputMode.None;
+            videoPlayer.enabled = true;
+
+            meshRenderer.enabled = false;
+            EditorUtility.SetDirty(videoBackground);
+            EditorUtility.SetDirty(videoPlayer);
+            EditorUtility.SetDirty(meshFilter);
+            EditorUtility.SetDirty(meshRenderer);
+            EditorUtility.SetDirty(neonRoot);
+            MarkDirtyAndSelect(neonRoot);
+            return true;
+        }
+
+        public static void SetupNeonWindowWorldV1Batch()
+        {
+            const string scenePath =
+                "Assets/Glassfall/Scenes/Prototype.unity";
+            if (!IsPrototypeSceneOpen())
+                EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+
+            if (!TrySetupNeonWindowWorldV1(showDialogs: false))
+                throw new System.InvalidOperationException(
+                    "M26 Neon Window setup could not resolve required scene dependencies.");
+
+            if (!EditorSceneManager.SaveOpenScenes())
+                throw new System.InvalidOperationException(
+                    "M26 Neon Window setup could not save Prototype.unity.");
+        }
+
+        private static bool TrySetupNeonWindowWorldV1(bool showDialogs)
+        {
+            if (!IsPrototypeSceneOpen())
+            {
+                if (showDialogs)
+                {
+                    EditorUtility.DisplayDialog(
+                        "Glassfall - Neon Window World V1 kurulamadı",
+                        "Önce Assets/Glassfall/Scenes/Prototype.unity sahnesini aç.",
+                        "Tamam");
+                }
+                return false;
+            }
+
+            GameObject arena = GameObject.Find("Arena");
+            GameObject boundsObject = GameObject.Find("NeurtalSpawnArea") ??
+                GameObject.Find("NeutralSpawnArea");
+            Collider2D worldBounds = boundsObject != null
+                ? boundsObject.GetComponent<Collider2D>()
+                : null;
+            Camera mainCamera = Camera.main;
+            MicroRunController run =
+                Object.FindAnyObjectByType<MicroRunController>();
+            WetnessField wetnessField =
+                Object.FindAnyObjectByType<WetnessField>();
+            WorldNavigationOverlay navigation =
+                Object.FindAnyObjectByType<WorldNavigationOverlay>();
+            FoggedWindowWorldBackground foggedBackground =
+                Object.FindAnyObjectByType<FoggedWindowWorldBackground>();
+            GameObject foggedRoot = foggedBackground != null
+                ? foggedBackground.gameObject
+                : arena != null
+                    ? arena.transform.Find("FoggedWindowWorldV1")?.gameObject
+                    : null;
+
+            if (arena == null || worldBounds == null || mainCamera == null ||
+                run == null || wetnessField == null || navigation == null ||
+                foggedRoot == null)
+            {
+                if (showDialogs)
+                {
+                    EditorUtility.DisplayDialog(
+                        "Glassfall - Neon Window World V1 kurulamadı",
+                        "Arena, canonical world bounds, Main Camera, MicroRunController, " +
+                        "WetnessField, WorldNavigationOverlay veya FoggedWindowWorldV1 eksik.",
+                        "Tamam");
+                }
+                return false;
+            }
+
+            if (!run.TryGetWorldSegmentCopy(
+                    0,
+                    out MicroRunWorldSegment existingFogged))
+            {
+                if (showDialogs)
+                {
+                    EditorUtility.DisplayDialog(
+                        "Glassfall - Neon Window World V1 kurulamadı",
+                        "Mevcut FOGGED_WINDOW segmenti bulunamadı. Önce 25.5B world " +
+                        "segment boundary setup'ını çalıştır.",
+                        "Tamam");
+                }
+                return false;
+            }
+
+            MicroRunWorldSegment foggedSegment = new MicroRunWorldSegment(
+                "FOGGED_WINDOW",
+                existingFogged.CopyEncounterPositions(),
+                existingFogged.CopyMovementModes());
+            MicroRunWorldSegment neonSegment = new MicroRunWorldSegment(
+                "NEON_WINDOW",
+                new[]
+                {
+                    new Vector2(-12.0f, 6.2f),
+                    new Vector2(6.8f, -6.4f),
+                    new Vector2(14.2f, 5.5f)
+                },
+                new[]
+                {
+                    ArcHunterMovementMode.Strafe,
+                    ArcHunterMovementMode.WetRoutePressure,
+                    ArcHunterMovementMode.Chase
+                });
+
+            Undo.RecordObject(run, "Configure M26 World Segments");
+            run.ConfigureWorldSegments(new[] { foggedSegment, neonSegment });
+            run.ConfigureWorldHandoff(wetnessField);
+            EditorUtility.SetDirty(run);
+
+            Undo.RecordObject(
+                foggedBackground,
+                "Keep Fogged Presentation Bound To World 1");
+            foggedBackground.ConfigureWorldProgressBinding(0);
+            EditorUtility.SetDirty(foggedBackground);
+
+            GameObject neonRoot = EnsureChild(arena, "NeonWindowWorldV1");
+            Undo.RecordObject(neonRoot.transform, "Configure Neon Window Root");
+            neonRoot.transform.localPosition = Vector3.zero;
+            neonRoot.transform.localRotation = Quaternion.identity;
+            neonRoot.transform.localScale = Vector3.one;
+
+            GameObject ambienceObject = EnsureChild(
+                neonRoot,
+                "NeonAmbience");
+            GameObject transitionObject = EnsureChild(
+                neonRoot,
+                "NeonTransition");
+            AudioSource ambienceSource =
+                GetOrAddComponent<AudioSource>(ambienceObject);
+            AudioSource transitionSource =
+                GetOrAddComponent<AudioSource>(transitionObject);
+            ConfigureNeonAudioSource(ambienceSource, loop: true);
+            ConfigureNeonAudioSource(transitionSource, loop: false);
+
+            NeonWindowWorldPresentation neonPresentation =
+                GetOrAddComponent<NeonWindowWorldPresentation>(neonRoot);
+            Undo.RecordObject(
+                neonPresentation,
+                "Configure Neon Window Presentation");
+            neonPresentation.Configure(
+                mainCamera,
+                worldBounds,
+                run,
+                ambienceSource,
+                transitionSource);
+            EditorUtility.SetDirty(neonPresentation);
+
+            WorldPresentationRouter router =
+                GetOrAddComponent<WorldPresentationRouter>(run.gameObject);
+            Undo.RecordObject(router, "Configure M26 Presentation Router");
+            router.Configure(
+                run,
+                foggedRoot,
+                neonRoot,
+                foggedSegmentIndex: 0,
+                neonSegmentIndex: 1);
+            EditorUtility.SetDirty(router);
+
+            if (!Application.isPlaying)
+            {
+                foggedRoot.SetActive(true);
+                neonRoot.SetActive(false);
+            }
+
+            EditorUtility.SetDirty(ambienceSource);
+            EditorUtility.SetDirty(transitionSource);
+            EditorUtility.SetDirty(neonRoot);
+            MarkDirtyAndSelect(run.gameObject);
+            return true;
+        }
+
+        private static void ConfigureNeonAudioSource(
+            AudioSource source,
+            bool loop)
+        {
+            if (source == null)
+                return;
+
+            Undo.RecordObject(source, "Configure Neon Window Audio Source");
+            source.playOnAwake = false;
+            source.loop = loop;
+            source.spatialBlend = 0f;
+            source.dopplerLevel = 0f;
+            source.volume = 1f;
+            source.pitch = 1f;
+        }
+
         private static void RemoveTiledGlassFloorPresentation(GameObject arena)
         {
             if (arena == null)

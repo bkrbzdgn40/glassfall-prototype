@@ -119,6 +119,96 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &72126721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 72126723}
+  - component: {fileID: 72126722}
+  - component: {fileID: 72126724}
+  m_Layer: 0
+  m_Name: NeonWindowVideoSurface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!33 &72126722
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72126721}
+  m_Mesh: {fileID: 0}
+--- !u!4 &72126723
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72126721}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 6}
+  m_LocalScale: {x: 41.79, y: 23.506876, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1539715654}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &72126724
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72126721}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &200539110
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,6 +475,135 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &401515016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 401515018}
+  - component: {fileID: 401515017}
+  m_Layer: 0
+  m_Name: NeonAmbience
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &401515017
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401515016}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 0
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &401515018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401515016}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1539715654}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &418684726
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,7 +769,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ddf0c8bfa5e47cc9fb2b9c0ad8e6314, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Wetness.WetnessField
   gridWidth: 128
   gridHeight: 128
@@ -735,8 +954,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
@@ -845,7 +1064,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e8b2c6f1a7359d0b6f3c7e2a5148069, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.CameraFeedbackTarget
   collectAmplitude: 0.025
   collectDuration: 0.08
@@ -864,7 +1083,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f27c7259fd74f42b8ee8ad4d6a67d7e, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.WorldCameraFollow
   targetCamera: {fileID: 519420031}
   splitSystem: {fileID: 1990271371}
@@ -1085,8 +1304,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_ComponentVersion: 4
   m_LightType: 4
   m_BlendStyleIndex: 0
@@ -1350,7 +1569,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3049b7ec5344cbf4b3325adba5ee2505, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.ResonanceNodeVisual
   authoredSprite: {fileID: 372834292}
   segments: 40
@@ -1481,7 +1700,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e591a49dd2c2acf83fe4a883caf9105e, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Encounter.ResonanceNode
   linkSystem: {fileID: 1289876788}
   interactionRadius: 0.65
@@ -1742,7 +1961,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b31d8f4a7c2e4095a6f1d3b8e72c0549, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Surface.SurfaceZone
   surfaceType: 1
   accelerationMultiplier: 0.75
@@ -1865,7 +2084,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e0c3b8f52c04f2e9c8c7f4d1a6b53e9, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.SurfaceZoneVisual
   surfaceZone: {fileID: 966953340}
   targetRenderer: {fileID: 966953342}
@@ -2301,7 +2520,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9d37ff8e04c37a13d93ae9875add3bb, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.ArcHunterVisual
   buildController: {fileID: 2135803802}
   combat: {fileID: 1289876792}
@@ -2450,7 +2669,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf8f076695bc81c80b1fe98abd689e68, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Combat.ArcHunter
   linkSystem: {fileID: 1289876788}
   wetnessField: {fileID: 440745371}
@@ -2490,7 +2709,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f1d3a816acf46a08690bea148cf5911, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Combat.MassShearSystem
   playerSplitSystem: {fileID: 1990271371}
   massFragmentPrefab: {fileID: 432221616498469860, guid: 9ae5354f49537b645a69e42dcecd51b0, type: 3}
@@ -2519,7 +2738,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b7eebbd84d3d2391ce5c5029815bfd8, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.ArcHunterHealthReadability
   hunter: {fileID: 1172091993}
   showHealthArc: 1
@@ -2576,7 +2795,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cbdcd114f350974994a4577eb7cdfa3, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.FoggedWindowWorldBackground
   backgroundClip: {fileID: 32900000, guid: ebaaf5dc507a1db4e85719a5d75036f0, type: 3}
   targetCamera: {fileID: 519420031}
@@ -2629,9 +2848,9 @@ VideoPlayer:
   m_AudioOutputMode: 0
   m_TargetAudioSources: []
   m_DirectAudioVolumes: []
-  m_Url: 
-  m_EnabledAudioTracks: 
-  m_DirectAudioMutes: 
+  m_Url:
+  m_EnabledAudioTracks:
+  m_DirectAudioMutes:
   m_ControlledAudioTrackCount: 0
   m_PlayOnAwake: 0
   m_SkipOnDrop: 1
@@ -2655,6 +2874,7 @@ GameObject:
   - component: {fileID: 1207178822}
   - component: {fileID: 1207178823}
   - component: {fileID: 1207178824}
+  - component: {fileID: 1207178825}
   m_Layer: 0
   m_Name: MicroRunV1
   m_TagString: Untagged
@@ -2688,7 +2908,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44affb8ba07b47f5a0cb11a3009974bb, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.MicroRunOverlay
   runController: {fileID: 1207178819}
   buildController: {fileID: 2135803802}
@@ -2708,7 +2928,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af1fd7136c1c41d6b0457b4938083010, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Run.MicroRunController
   buildController: {fileID: 2135803802}
   resonanceNode: {fileID: 673876969}
@@ -2718,11 +2938,15 @@ MonoBehaviour:
   rewardController: {fileID: 1207178821}
   splitSystem: {fileID: 1990271371}
   contaminationSystem: {fileID: 1207178822}
+  wetnessField: {fileID: 440745371}
   encounterSpawnPositions:
   - {x: -11.5, y: -5.5}
   - {x: 0, y: 7}
   - {x: 13, y: 1.8}
-  encounterMovementModes: 000000000100000002000000i
+  - {x: -12, y: 6.2}
+  - {x: 6.8, y: -6.4}
+  - {x: 14.2, y: 5.5}
+  encounterMovementModes: 000000000100000002000000010000000200000000000000i
   worldSegments:
   - worldId: FOGGED_WINDOW
     encounterPositions:
@@ -2730,6 +2954,12 @@ MonoBehaviour:
     - {x: 0, y: 7}
     - {x: 13, y: 1.8}
     movementModes: 000000000100000002000000i
+  - worldId: NEON_WINDOW
+    encounterPositions:
+    - {x: -12, y: 6.2}
+    - {x: 6.8, y: -6.4}
+    - {x: 14.2, y: 5.5}
+    movementModes: 010000000200000000000000i
   currentWorldStartEncounter: 1
   currentWorldEncounterCount: 3
   preparationMassGainTarget: 2
@@ -2761,7 +2991,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea5f4f80f36046f0aa0b62a8d9965ed9, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.MidRunRewardOverlay
   runController: {fileID: 1207178819}
   rewardController: {fileID: 1207178821}
@@ -2776,7 +3006,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d1b2e6394fb4e6180344d299de1aec0, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Rewards.MidRunRewardController
   splitSystem: {fileID: 1990271371}
   mergeSystem: {fileID: 1990271366}
@@ -2804,7 +3034,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b3b2d2c608cc4c118450cb9f9747c499, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Run.ContaminationSystem
   mergedHitGain: 0.18
   splitHitGain: 0.23
@@ -2829,7 +3059,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d75106d1d7070ca18aa4c9b38fb4b15, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.CombatAudioFeedback
   linkCombat: {fileID: 1289876792}
   arcHunter: {fileID: 1172091993}
@@ -2875,13 +3105,159 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dc57cf5a1a4eb5dc15d820a2ae38991, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Diagnostics.RuntimeEvidenceProbe
   runController: {fileID: 1207178819}
   enableBinaryProfilerLogInDevelopmentBuild: 1
   captureRunTransitions: 1
   rollingFrameWindow: 600
   showOverlayAtStartup: 0
+--- !u!114 &1207178825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207178816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d62ece6bc70a848962843420556e4e, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.WorldPresentationRouter
+  runController: {fileID: 1207178819}
+  foggedWindowRoot: {fileID: 1174966825}
+  neonWindowRoot: {fileID: 1539715652}
+  foggedWindowSegmentIndex: 0
+  neonWindowSegmentIndex: 1
+--- !u!1 &1219089203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1219089205}
+  - component: {fileID: 1219089204}
+  m_Layer: 0
+  m_Name: NeonTransition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1219089204
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219089203}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 0
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1219089205
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219089203}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1539715654}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1259121458
 GameObject:
   m_ObjectHideFlags: 0
@@ -3004,7 +3380,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7524f2cf162902a11e56273ff0504ea6, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Link.SplitLinkSystem
   splitSystem: {fileID: 1990271371}
 --- !u!114 &1289876789
@@ -3017,7 +3393,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff95bbb775bb6aae46746cad344ed884, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.SplitLinkVisual
   linkSystem: {fileID: 1289876788}
   buildController: {fileID: 0}
@@ -3179,7 +3555,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92bc04dd6c641b1aa353344738414949, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Combat.SplitLinkCombat
   linkSystem: {fileID: 1289876788}
   target: {fileID: 1172091993}
@@ -3249,7 +3625,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 573b247cbc3b4181a711a1112a326719, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.WetnessVisualRenderer
   wetnessField: {fileID: 440745371}
   targetRenderer: {fileID: 0}
@@ -3696,6 +4072,7 @@ Transform:
   - {fileID: 1174966826}
   - {fileID: 200539111}
   - {fileID: 997225463}
+  - {fileID: 1539715654}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1491824262
@@ -3740,7 +4117,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a3c059f47b6a0a4890d5fef857f73ec, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.WorldNavigationOverlay
   targetCamera: {fileID: 519420031}
   runController: {fileID: 1207178819}
@@ -3823,6 +4200,129 @@ Transform:
   - {fileID: 870701473}
   m_Father: {fileID: 1207178817}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1539715652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1539715654}
+  - component: {fileID: 1539715653}
+  - component: {fileID: 1539715656}
+  - component: {fileID: 1539715655}
+  m_Layer: 0
+  m_Name: NeonWindowWorldV1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1539715653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539715652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1295cd7223dd9ee4492bce1cea8590c1, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.NeonWindowWorldPresentation
+  targetCamera: {fileID: 519420031}
+  worldBounds: {fileID: 1689478806}
+  runController: {fileID: 1207178819}
+  ambienceSource: {fileID: 401515017}
+  transitionSource: {fileID: 1219089204}
+  clearColor: {r: 0.008, g: 0.018, b: 0.055, a: 1}
+  baseColor: {r: 0.012, g: 0.035, b: 0.085, a: 1}
+  cyan: {r: 0.12, g: 0.95, b: 1, a: 0.72}
+  magenta: {r: 1, g: 0.12, b: 0.78, a: 0.68}
+  violet: {r: 0.34, g: 0.12, b: 0.7, a: 0.42}
+  reflectionPulseSpeed: 1.15
+--- !u!4 &1539715654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539715652}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 401515018}
+  - {fileID: 1219089205}
+  - {fileID: 72126723}
+  m_Father: {fileID: 1487487561}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1539715655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539715652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7090e512747006f4aa041447e3a3384b, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.NeonWindowVideoBackground
+  backgroundClip: {fileID: 32900000, guid: 0b513ba3a70d3b14bb7da97b9a6117e7, type: 3}
+  targetCamera: {fileID: 519420031}
+  worldBounds: {fileID: 1689478806}
+  runController: {fileID: 1207178819}
+  videoRenderer: {fileID: 72126724}
+  videoMeshFilter: {fileID: 72126722}
+  videoShader: {fileID: 4800000, guid: 72ee300197ab4034bb5d6de49783848e, type: 3}
+  opacity: 0.7
+  brightness: 0.86
+  saturation: 0.9
+  tint: {r: 0.9, g: 0.96, b: 1, a: 1}
+  sortingOrder: -1091
+  worldZ: 6
+  boundsCoverage: 0.995
+  prepareTimeoutSeconds: 5
+--- !u!328 &1539715656
+VideoPlayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539715652}
+  m_Enabled: 1
+  m_VideoClip: {fileID: 32900000, guid: 0b513ba3a70d3b14bb7da97b9a6117e7, type: 3}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 0}
+  m_TargetTexture: {fileID: 0}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 72126724}
+  m_TargetMaterialProperty: _MainTex
+  m_RenderMode: 3
+  m_AspectRatio: 3
+  m_DataSource: 0
+  m_TimeUpdateMode: 2
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 0
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
+  m_Url:
+  m_EnabledAudioTracks: 01o
+  m_DirectAudioMutes: 00o
+  m_ControlledAudioTrackCount: 1
+  m_PlayOnAwake: 0
+  m_SkipOnDrop: 1
+  m_Looping: 1
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0
+  m_VideoShaders: []
 --- !u!1 &1560942991
 GameObject:
   m_ObjectHideFlags: 0
@@ -3957,7 +4457,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6e1c4f983b24d7fa0c5b8e29361d475, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Droplet.NeutralDropletSpawner
   neutralDropletPrefab: {fileID: 432221616498469860, guid: 9ae5354f49537b645a69e42dcecd51b0, type: 3}
   spawnArea: {fileID: 1689478806}
@@ -4127,7 +4627,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b8d2f6c1a3e49f0b7c4d9e2a6f81357, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.WetnessDebugRenderer
   wetnessField: {fileID: 440745371}
   targetRenderer: {fileID: 1636283068}
@@ -4706,7 +5206,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf633cbd42cbe2845bb8eb8bfe5d1ed6, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Droplet.DropletController
   acceleration: 12
   maxSpeed: 5.5
@@ -4734,7 +5234,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5008f7ee388ac1498cf1d32d3af9e93, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Input.UnityInputAdapter
 --- !u!114 &1990271364
 MonoBehaviour:
@@ -4746,7 +5246,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bbc9e4408673e8469c975c2ceff62ac, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.DropletVisual
   controller: {fileID: 1990271362}
   visualRoot: {fileID: 611615310}
@@ -4763,7 +5263,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ef20c6ec1f74bfaa2b3f4de1c3df514, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Droplet.DropletMergeSystem
   mergedCollectionMultiplier: 1
   splitCollectionMultiplier: 0.6
@@ -4778,7 +5278,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c1b4e7a2d5f4086a3e9b1c7d4f62058, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Wetness.DropletTrailDepositor
   wetnessField: {fileID: 440745371}
   trailSpacing: 0.15
@@ -4795,7 +5295,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a2ef1d4c93b4e0c8d1f5a6b9c7e2034, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Wetness.DropletWetnessSensor
   wetnessField: {fileID: 440745371}
 --- !u!114 &1990271369
@@ -4808,7 +5308,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d52f8a1c6e3b4097b4d0a9f271c68354, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Surface.DropletRuntimeDebug
   currentMass: 0
   currentRadius: 0
@@ -4838,7 +5338,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1a9d5b3f4680a2c7e6d914f83520, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Surface.DropletSurfaceSensor
 --- !u!114 &1990271371
 MonoBehaviour:
@@ -4850,7 +5350,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6b1d7c8a4e2490bb3c5d2e8f917406a, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Droplet.DropletSplitSystem
   splitCostRatio: 0.1
   minimumChildMass: 4
@@ -4880,7 +5380,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f5b7e9a3c2448b6a0d2e7c1f9a53684, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.DropletAudioFeedback
   collectClip: {fileID: 8300000, guid: 9a4c2e7f1b6358d0a6e3f5c9b2187042, type: 3}
   splitClip: {fileID: 8300000, guid: 5d8f3a1c7e2649b0a2f6c4e9b7138052, type: 3}
@@ -4997,7 +5497,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c4f1a7e2b6358d0f6e3c5a9b8147026, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.DropletCameraFeedback
   target: {fileID: 519420033}
 --- !u!114 &1990271375
@@ -5010,7 +5510,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8df67fbc724f4e25af24b849881517aa, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Droplet.MergedFormIdentity
   hunter: {fileID: 1172091993}
   attractionRadiusFromSurface: 1.25
@@ -5035,7 +5535,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16710197d18e46a5833567f87247694c, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.DropletPixelArtPresentation
   controller: {fileID: 1990271362}
   targetRenderer: {fileID: 611615311}
@@ -5057,7 +5557,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1399104c24a496c85eb48021e03d7ff, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.DropletPresentationFeedback
   collectPulseScale: 1.1
   collectPulseDuration: 0.15
@@ -5332,7 +5832,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d2f8b4c9a1e3f7b5d0c2a6e8f4b1c93, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Presentation.MicroBuildChoiceOverlay
   controller: {fileID: 2135803802}
   selectionFeedbackSeconds: 2.5
@@ -5346,7 +5846,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58b9d4e7f1a24c6b8d0e3f5a7c9b1d23, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Glassfall.Gameplay.Builds.MicroBuildChoiceController
   combat: {fileID: 1289876792}
 --- !u!1001 &5345917199648246907

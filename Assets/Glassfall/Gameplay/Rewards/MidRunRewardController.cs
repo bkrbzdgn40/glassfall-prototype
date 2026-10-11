@@ -12,6 +12,13 @@ namespace Glassfall.Gameplay.Rewards
     [DisallowMultipleComponent]
     public sealed class MidRunRewardController : MonoBehaviour
     {
+        public event Action<
+            int,
+            MidRunReward,
+            MidRunReward,
+            MidRunReward> RewardChoiceOffered;
+        public event Action<int, MidRunReward> RewardSelected;
+
         [Header("References")]
         [SerializeField] private DropletSplitSystem splitSystem;
         [SerializeField] private DropletMergeSystem mergeSystem;
@@ -215,6 +222,11 @@ namespace Glassfall.Gameplay.Rewards
             TrimHistory(_offeredChoiceHistory);
             AcquireGameplayFreeze();
             UpdateDiagnostics();
+            RewardChoiceOffered?.Invoke(
+                rewardStep,
+                GetActiveChoice(0),
+                GetActiveChoice(1),
+                GetActiveChoice(2));
             return true;
         }
 
@@ -249,6 +261,7 @@ namespace Glassfall.Gameplay.Rewards
             _selectedAtUnscaledTime = Time.unscaledTime;
             ReleaseGameplayFreeze();
             UpdateDiagnostics();
+            RewardSelected?.Invoke(completedStep, reward);
             return true;
         }
 
