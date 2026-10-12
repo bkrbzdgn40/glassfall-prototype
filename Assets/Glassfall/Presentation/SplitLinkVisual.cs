@@ -135,13 +135,19 @@ namespace Glassfall.Presentation
                     : MicroBuildChoice.None;
 
             _line.enabled = true;
-            UpdateMainLinkGeometry(start, end);
+            float tension = combat != null
+                ? combat.CalculateSurfaceTensionOverstretch01(
+                    Vector2.Distance(start, end))
+                : 0f;
 
-            ApplyMainLinkReadability(selectedBuild);
-            UpdateBroadArcHalo(selectedBuild);
+            UpdateMainLinkGeometry(start, end, tension);
+            ApplyMainLinkReadability(selectedBuild, tension);
+            UpdateBroadArcHalo(selectedBuild, tension);
         }
 
-        private void ApplyMainLinkReadability(MicroBuildChoice selectedBuild)
+        private void ApplyMainLinkReadability(
+            MicroBuildChoice selectedBuild,
+            float tension)
         {
             Color color = linkColor;
             float currentWidth = width;
@@ -188,9 +194,6 @@ namespace Glassfall.Presentation
                 }
             }
 
-            float tension = combat != null
-                ? combat.SurfaceTensionOverstretch01
-                : 0f;
             if (tension > 0f)
             {
                 float pulse =
@@ -211,12 +214,11 @@ namespace Glassfall.Presentation
             _line.endColor = color;
         }
 
-        private void UpdateMainLinkGeometry(Vector2 start, Vector2 end)
+        private void UpdateMainLinkGeometry(
+            Vector2 start,
+            Vector2 end,
+            float tension)
         {
-            float tension = combat != null
-                ? combat.SurfaceTensionOverstretch01
-                : 0f;
-
             if (tension <= 0.001f || overstretchedWobbleAmplitude <= 0f)
             {
                 _line.positionCount = 2;
@@ -239,7 +241,9 @@ namespace Glassfall.Presentation
             _line.SetPosition(2, end);
         }
 
-        private void UpdateBroadArcHalo(MicroBuildChoice selectedBuild)
+        private void UpdateBroadArcHalo(
+            MicroBuildChoice selectedBuild,
+            float tension)
         {
             if (broadArcHalo == null ||
                 selectedBuild != MicroBuildChoice.BroadArc ||
@@ -257,7 +261,7 @@ namespace Glassfall.Presentation
                 broadArcMinimumHaloWidth,
                 width + combat.HitPadding);
 
-            float tension = Mathf.Clamp01(combat.SurfaceTensionOverstretch01);
+            tension = Mathf.Clamp01(tension);
             Color haloColor = broadArcHaloColor;
             haloColor.a *= Mathf.Lerp(1f, 0.35f, tension);
 

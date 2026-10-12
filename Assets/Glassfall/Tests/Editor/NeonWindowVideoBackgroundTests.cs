@@ -51,6 +51,35 @@ namespace Glassfall.Tests
         }
 
         [Test]
+        public void PixelGlassOverlayOnlyShowsForActiveNeonWorld()
+        {
+            Type type = Type.GetType(
+                "Glassfall.Presentation.NeonWindowGlassOverlay, Assembly-CSharp",
+                true);
+            Assert.That(
+                (bool)InvokeStatic(
+                    type,
+                    "ShouldShowForWorld",
+                    "NEON_WINDOW",
+                    true),
+                Is.True);
+            Assert.That(
+                (bool)InvokeStatic(
+                    type,
+                    "ShouldShowForWorld",
+                    "FOGGED_WINDOW",
+                    true),
+                Is.False);
+            Assert.That(
+                (bool)InvokeStatic(
+                    type,
+                    "ShouldShowForWorld",
+                    "NEON_WINDOW",
+                    false),
+                Is.False);
+        }
+
+        [Test]
         public void FirstFrameGateRejectsBlankAndFailedVideo()
         {
             Type type = Type.GetType(BackgroundTypeName, true);
@@ -176,6 +205,52 @@ namespace Glassfall.Tests
             {
                 UnityEngine.Object.DestroyImmediate(root);
             }
+        }
+
+        [Test]
+        public void FoggedFinaleAtmosphereOnlyShowsDuringFoggedFinalEncounter()
+        {
+            Type type = Type.GetType(
+                "Glassfall.Presentation.FoggedWindowWorldBackground, Assembly-CSharp",
+                true);
+            Type phaseType = Type.GetType(
+                "Glassfall.Gameplay.Run.MicroRunPhase, Assembly-CSharp",
+                true);
+            object encounterPhase = Enum.Parse(phaseType, "Encounter");
+            object rewardChoicePhase = Enum.Parse(phaseType, "RewardChoice");
+            Assert.That(
+                (bool)InvokeStatic(
+                    type,
+                    "ShouldShowFinaleAtmosphere",
+                    "FOGGED_WINDOW",
+                    0,
+                    encounterPhase,
+                    true,
+                    false,
+                    true),
+                Is.True);
+            Assert.That(
+                (bool)InvokeStatic(
+                    type,
+                    "ShouldShowFinaleAtmosphere",
+                    "NEON_WINDOW",
+                    1,
+                    encounterPhase,
+                    true,
+                    false,
+                    true),
+                Is.False);
+            Assert.That(
+                (bool)InvokeStatic(
+                    type,
+                    "ShouldShowFinaleAtmosphere",
+                    "FOGGED_WINDOW",
+                    0,
+                    rewardChoicePhase,
+                    true,
+                    false,
+                    true),
+                Is.False);
         }
 
         private static object InvokeStatic(

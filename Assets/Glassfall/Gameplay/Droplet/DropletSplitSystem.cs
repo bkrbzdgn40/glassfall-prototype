@@ -9,6 +9,7 @@ namespace Glassfall.Gameplay.Droplet
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(DropletController))]
+    [DefaultExecutionOrder(120)]
     public sealed class DropletSplitSystem : MonoBehaviour
     {
         [Header("Split Tuning")]
@@ -29,6 +30,13 @@ namespace Glassfall.Gameplay.Droplet
 
         [SerializeField] private LayerMask blockingLayers = ~0;
 
+        [Header("Split Separation Limit")]
+        [Min(0.01f)]
+        [SerializeField] private float separationResistanceStartDistance = 8f;
+
+        [Min(0.02f)]
+        [SerializeField] private float maximumSeparationDistance = 10f;
+
         [Header("Runtime Mirrors (observation only)")]
         [SerializeField] private bool debugIsSplit;
         [SerializeField] private float debugPrimaryMass;
@@ -38,6 +46,8 @@ namespace Glassfall.Gameplay.Droplet
         [SerializeField] private float debugCurrentSeparation;
         [SerializeField] private float debugRemergeThreshold;
         [SerializeField] private float debugRemergeLockRemaining;
+        [SerializeField] private float debugSeparationResistance01;
+        [SerializeField] private float debugMaximumSeparationDistance;
         [SerializeField] private float debugPrimaryInputPolarity = 1f;
         [SerializeField] private float debugMirrorInputPolarity;
 
@@ -50,6 +60,7 @@ namespace Glassfall.Gameplay.Droplet
         private bool _splitActive;
         private float _runtimeSplitCostRatio;
         private bool _runtimeSplitCostInitialized;
+        private float _runtimeSeparationDistanceBonus;
 
         private GameObject _mirrorObject;
         private DropletController _mirrorController;
@@ -81,6 +92,20 @@ namespace Glassfall.Gameplay.Droplet
         public Transform MirrorTransform =>
             IsSplit ? _mirrorController.transform : null;
         public float SplitCostRatio => GetRuntimeSplitCostRatio();
+        public float SeparationResistanceStartDistance =>
+            GetRuntimeSeparationResistanceStartDistance();
+        public float MaximumSeparationDistance =>
+            GetRuntimeMaximumSeparationDistance();
+        public float CurrentSeparation => IsSplit &&
+            _primaryBody != null &&
+            _mirrorBody != null
+            ? Vector2.Distance(_primaryBody.position, _mirrorBody.position)
+            : 0f;
+        public float SeparationResistance01 =>
+            CalculateSeparationResistance01(
+                CurrentSeparation,
+                SeparationResistanceStartDistance,
+                MaximumSeparationDistance);
 
         private void Awake()
         {
@@ -99,6 +124,12 @@ namespace Glassfall.Gameplay.Droplet
             splitGap = Mathf.Max(0f, splitGap);
             remergePadding = Mathf.Max(0f, remergePadding);
             remergeLockSeconds = Mathf.Max(0f, remergeLockSeconds);
+            separationResistanceStartDistance = Mathf.Max(
+                0.01f,
+                separationResistanceStartDistance);
+            maximumSeparationDistance = Mathf.Max(
+                separationResistanceStartDistance + 0.01f,
+                maximumSeparationDistance);
         }
 
         public void ResetRuntimeRewardTuning()
@@ -106,6 +137,108 @@ namespace Glassfall.Gameplay.Droplet
             _runtimeSplitCostRatio =
                 Mathf.Clamp(splitCostRatio, 0f, 0.99f);
             _runtimeSplitCostInitialized = true;
+            _runtimeSeparationDistanceBonus = 0f;
+        }
+
+        public void ConfigureSeparationLimit(
+            float resistanceStartDistance = 8f,
+            float maximumDistance = 10f)
+        {
+            separationResistanceStartDistance = Mathf.Max(
+                0.01f,
+                resistanceStartDistance);
+            maximumSeparationDistance = Mathf.Max(
+                separationResistanceStartDistance + 0.01f,
+                maximumDistance);
+        }
+
+        public void ApplyElasticMembraneSeparationBonus(float distanceBonus)
+        {
+            _runtimeSeparationDistanceBonus = Mathf.Max(0f, distanceBonus);
+        }
+
+        public static float CalculateSeparationResistance01(
+            float separation,
+            float resistanceStartDistance,
+            float maximumDistance)
+        {
+            float start = Mathf.Max(0f, resistanceStartDistance);
+            float maximum = Mathf.Max(start + 0.01f, maximumDistance);
+            return Mathf.SmoothStep(
+                0f,
+                1f,
+                Mathf.InverseLerp(start, maximum, Mathf.Max(0f, separation)));
+        }
+
+        public static float CalculateAllowedOutwardSpeed(
+            float separation,
+            float outwardSpeed,
+            float resistanceStartDistance,
+            float maximumDistance,
+            float deltaTime)
+        {
+            if (outwardSpeed <= 0f)
+                return outwardSpeed;
+
+            float start = Mathf.Max(0f, resistanceStartDistance);
+            float maximum = Mathf.Max(start + 0.01f, maximumDistance);
+            float dt = Mathf.Max(0.0001f, deltaTime);
+            float resistance01 = CalculateSeparationResistance01(
+                separation,
+                start,
+                maximum);
+            float allowed = outwardSpeed * (1f - resistance01);
+            if (separation >= maximum)
+                return 0f;
+
+            float distanceLimited =
+                Mathf.Max(0f, maximum - Mathf.Max(0f, separation)) / dt;
+            return Mathf.Min(allowed, distanceLimited);
+        }
+
+        public static Vector2 CalculateConstrainedRelativeVelocity(
+            Vector2 separationVector,
+            Vector2 relativeVelocity,
+            float resistanceStartDistance,
+            float maximumDistance,
+            float deltaTime)
+        {
+            float separation = separationVector.magnitude;
+            Vector2 axis = separation > 0.0001f
+                ? separationVector / separation
+                : relativeVelocity.sqrMagnitude > 0.0001f
+                    ? relativeVelocity.normalized
+                    : Vector2.right;
+            float radialVelocity = Vector2.Dot(relativeVelocity, axis);
+            float desiredRadialVelocity = radialVelocity;
+            float maximum = Mathf.Max(
+                Mathf.Max(0f, resistanceStartDistance) + 0.01f,
+                maximumDistance);
+
+            if (separation > maximum)
+            {
+                float overflow = separation - maximum;
+                float inwardCorrection = Mathf.Min(
+                    4f,
+                    overflow / Mathf.Max(0.0001f, deltaTime));
+                desiredRadialVelocity = Mathf.Min(
+                    radialVelocity,
+                    -inwardCorrection);
+            }
+            else if (radialVelocity > 0f)
+            {
+                desiredRadialVelocity = CalculateAllowedOutwardSpeed(
+                    separation,
+                    radialVelocity,
+                    resistanceStartDistance,
+                    maximum,
+                    deltaTime);
+            }
+
+            float correction = radialVelocity - desiredRadialVelocity;
+            return correction > 0.0001f
+                ? relativeVelocity - axis * correction
+                : relativeVelocity;
         }
 
         public void ApplyEfficientDivisionTuning(
@@ -127,6 +260,8 @@ namespace Glassfall.Gameplay.Droplet
 
             if (!IsSplit)
                 return;
+
+            ConstrainSeparation(Time.fixedDeltaTime);
 
             if (Time.fixedTime < _remergeUnlockTime)
                 return;
@@ -530,12 +665,61 @@ namespace Glassfall.Gameplay.Droplet
             debugRemergeLockRemaining = IsSplit
                 ? Mathf.Max(0f, _remergeUnlockTime - Time.fixedTime)
                 : 0f;
+            debugSeparationResistance01 = SeparationResistance01;
+            debugMaximumSeparationDistance = MaximumSeparationDistance;
             debugPrimaryInputPolarity = _primaryController != null
                 ? _primaryController.MovementInputPolarity
                 : 1f;
             debugMirrorInputPolarity = IsSplit
                 ? _mirrorController.MovementInputPolarity
                 : 0f;
+        }
+
+        private float GetRuntimeSeparationResistanceStartDistance()
+        {
+            return Mathf.Max(
+                0.01f,
+                separationResistanceStartDistance +
+                _runtimeSeparationDistanceBonus);
+        }
+
+        private float GetRuntimeMaximumSeparationDistance()
+        {
+            return Mathf.Max(
+                GetRuntimeSeparationResistanceStartDistance() + 0.01f,
+                maximumSeparationDistance +
+                _runtimeSeparationDistanceBonus);
+        }
+
+        private void ConstrainSeparation(float deltaTime)
+        {
+            if (_primaryBody == null || _mirrorBody == null)
+                return;
+
+            Vector2 primaryPosition = _primaryBody.position;
+            Vector2 mirrorPosition = _mirrorBody.position;
+            Vector2 delta = mirrorPosition - primaryPosition;
+            Vector2 relativeVelocity =
+                _mirrorBody.linearVelocity - _primaryBody.linearVelocity;
+            Vector2 constrainedRelativeVelocity =
+                CalculateConstrainedRelativeVelocity(
+                    delta,
+                    relativeVelocity,
+                    GetRuntimeSeparationResistanceStartDistance(),
+                    GetRuntimeMaximumSeparationDistance(),
+                    deltaTime);
+            Vector2 correction =
+                relativeVelocity - constrainedRelativeVelocity;
+            if (correction.sqrMagnitude <= 0.00000001f)
+                return;
+
+            float primaryMass = Mathf.Max(0.01f, _primaryBody.mass);
+            float mirrorMass = Mathf.Max(0.01f, _mirrorBody.mass);
+            float totalMass = primaryMass + mirrorMass;
+            _primaryBody.linearVelocity = _primaryBody.linearVelocity +
+                correction * (mirrorMass / totalMass);
+            _mirrorBody.linearVelocity = _mirrorBody.linearVelocity -
+                correction * (primaryMass / totalMass);
         }
     }
 

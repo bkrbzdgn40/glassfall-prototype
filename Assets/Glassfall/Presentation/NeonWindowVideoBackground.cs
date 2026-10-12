@@ -13,6 +13,8 @@ namespace Glassfall.Presentation
         private const string VideoSurfaceName = "NeonWindowVideoSurface";
         private const string VideoTextureProperty = "_MainTex";
         private const float SourceAspect = 16f / 9f;
+        private const string FoggedGlassShaderName =
+            "Glassfall/VideoBackgroundBlur";
 
         [Header("References")]
         [SerializeField] private VideoClip backgroundClip;
@@ -36,6 +38,25 @@ namespace Glassfall.Presentation
         [Range(0.90f, 1f)]
         [SerializeField] private float boundsCoverage = 0.995f;
 
+        [Header("Shared Fogged Glass Treatment")]
+        [SerializeField] private bool useFoggedGlassTreatment = true;
+        [Range(0f, 12f)]
+        [SerializeField] private float initialBlurRadiusPixels = 8f;
+        [Range(0f, 1f)]
+        [SerializeField] private float initialBlurMix = 0.98f;
+        [Range(0f, 12f)]
+        [SerializeField] private float middleBlurRadiusPixels = 4f;
+        [Range(0f, 1f)]
+        [SerializeField] private float middleBlurMix = 0.78f;
+        [Range(0f, 12f)]
+        [SerializeField] private float lateBlurRadiusPixels = 1.2f;
+        [Range(0f, 1f)]
+        [SerializeField] private float lateBlurMix = 0.30f;
+        [Min(0.01f)]
+        [SerializeField] private float blurTransitionSpeed = 2.6f;
+        [Min(0)]
+        [SerializeField] private int progressWorldSegmentIndex = 1;
+
         [Header("Readiness")]
         [Min(0.5f)]
         [SerializeField] private float prepareTimeoutSeconds = 5f;
@@ -50,10 +71,19 @@ namespace Glassfall.Presentation
         private bool _failureFallbackActive;
         private bool _warnedFailure;
         private float _prepareStartedAt = -1f;
+        private bool _hasBlurState;
+        private float _currentBlurRadius;
+        private float _currentBlurMix;
+        private int _highestCompletedEncounterCount;
+        private int _lastWorldStartEncounter = -1;
+        private int _lastWorldEncounterCount = -1;
 
         public bool IsPlaybackRequested => _playbackRequested;
         public bool IsVideoSurfaceReady => _surfaceReady;
         public bool IsVideoFailureFallbackActive => _failureFallbackActive;
+        // Kept for compatibility with older diagnostics. The former custom
+        // NeonWindowGlassOverlay is no longer instantiated or rendered.
+        public bool IsGlassOverlayVisible => false;
         public bool HasProceduralFallback =>
             GetComponent<NeonWindowWorldPresentation>() != null;
 
@@ -80,6 +110,16 @@ namespace Glassfall.Presentation
                    hasTexture &&
                    frameIndex >= 0 &&
                    !hasFailure;
+        }
+
+        public void ConfigureFoggedGlassTreatment(
+            bool enabled = true,
+            int worldSegmentIndex = 1)
+        {
+            useFoggedGlassTreatment = enabled;
+            progressWorldSegmentIndex = Mathf.Max(0, worldSegmentIndex);
+            ResetProgressiveGlassState();
+            ApplyMaterialProperties();
         }
 
         public void Configure(
@@ -114,6 +154,7 @@ namespace Glassfall.Presentation
             boundsCoverage = Mathf.Clamp(coverage, 0.90f, 1f);
 
             CacheDependencies();
+            ResetProgressiveGlassState();
             ApplyMaterialProperties();
             FitSurfacePreservingAspect();
 
@@ -126,6 +167,7 @@ namespace Glassfall.Presentation
 
         private void Awake()
         {
+            ResetProgressiveGlassState();
             CacheDependencies();
         }
 
@@ -147,6 +189,8 @@ namespace Glassfall.Presentation
                 runController != null ? runController.CurrentWorldId : null,
                 isActiveAndEnabled,
                 backgroundClip != null);
+            UpdateProgressiveGlass(Time.unscaledDeltaTime);
+            ApplyMaterialProperties();
             if (shouldPlay && !_playbackRequested)
                 BeginPreparedPlayback();
             else if (!shouldPlay && _playbackRequested)
@@ -249,7 +293,9 @@ namespace Glassfall.Presentation
             _videoPlayer.targetMaterialRenderer = videoRenderer;
             _videoPlayer.targetMaterialProperty = VideoTextureProperty;
             _videoPlayer.targetCamera = null;
-            _videoPlayer.aspectRatio = VideoAspectRatio.FitInside;
+            _videoPlayer.aspectRatio = useFoggedGlassTreatment
+                ? VideoAspectRatio.FitOutside
+                : VideoAspectRatio.FitInside;
             _videoPlayer.isLooping = true;
             _videoPlayer.playOnAwake = false;
             _videoPlayer.waitForFirstFrame = true;
@@ -281,6 +327,7 @@ namespace Glassfall.Presentation
             _playbackRequested = false;
             _surfaceReady = false;
             _prepareStartedAt = -1f;
+            ResetProgressiveGlassState();
             SetProceduralFallbackVisible(true);
 
             if (videoRenderer != null)
@@ -448,9 +495,15 @@ namespace Glassfall.Presentation
 
             if (_runtimeMaterial == null)
             {
-                Shader shader = videoShader != null
-                    ? videoShader
-                    : Shader.Find("Glassfall/NeonVideoBackground");
+                Shader shader = useFoggedGlassTreatment
+                    ? Shader.Find(FoggedGlassShaderName)
+                    : null;
+                if (shader == null)
+                {
+                    shader = videoShader != null
+                        ? videoShader
+                        : Shader.Find("Glassfall/NeonVideoBackground");
+                }
                 if (shader == null)
                     return;
 
@@ -480,6 +533,108 @@ namespace Glassfall.Presentation
             _runtimeMaterial.SetFloat("_Brightness", brightness);
             _runtimeMaterial.SetFloat("_Saturation", saturation);
             _runtimeMaterial.SetColor("_Tint", NormalizeTint(tint));
+            if (useFoggedGlassTreatment &&
+                _runtimeMaterial.shader != null &&
+                _runtimeMaterial.shader.name == FoggedGlassShaderName)
+            {
+                _runtimeMaterial.SetFloat("_BlurRadius", _currentBlurRadius);
+                _runtimeMaterial.SetFloat("_BlurMix", _currentBlurMix);
+                _runtimeMaterial.SetFloat(
+                    "_TargetAspect",
+                    targetCamera != null
+                        ? Mathf.Max(0.01f, targetCamera.aspect)
+                        : SourceAspect);
+            }
+        }
+
+        private void UpdateProgressiveGlass(float deltaTime)
+        {
+            int phase = ResolveGlassPhase();
+            float targetRadius;
+            float targetMix;
+            switch (phase)
+            {
+                case 1:
+                    targetRadius = middleBlurRadiusPixels;
+                    targetMix = middleBlurMix;
+                    break;
+                case 2:
+                    targetRadius = lateBlurRadiusPixels;
+                    targetMix = lateBlurMix;
+                    break;
+                default:
+                    targetRadius = initialBlurRadiusPixels;
+                    targetMix = initialBlurMix;
+                    break;
+            }
+
+            if (!_hasBlurState || deltaTime <= 0f)
+            {
+                _currentBlurRadius = targetRadius;
+                _currentBlurMix = targetMix;
+                _hasBlurState = true;
+                return;
+            }
+
+            float blend = 1f - Mathf.Exp(
+                -blurTransitionSpeed * Mathf.Max(0f, deltaTime));
+            _currentBlurRadius = Mathf.Lerp(
+                _currentBlurRadius,
+                targetRadius,
+                blend);
+            _currentBlurMix = Mathf.Lerp(
+                _currentBlurMix,
+                targetMix,
+                blend);
+        }
+
+        private int ResolveGlassPhase()
+        {
+            if (!useFoggedGlassTreatment || runController == null)
+                return 0;
+
+            int activeWorldSegmentIndex =
+                runController.CurrentWorldSegmentIndex;
+            if (activeWorldSegmentIndex < progressWorldSegmentIndex)
+                return 0;
+            if (activeWorldSegmentIndex > progressWorldSegmentIndex)
+                return 2;
+
+            int encounterCount = Mathf.Max(
+                1,
+                runController.CurrentWorldEncounterCount);
+            int worldStartEncounter = runController.CurrentWorldStartEncounter;
+            if (_lastWorldStartEncounter != worldStartEncounter ||
+                _lastWorldEncounterCount != encounterCount)
+            {
+                _lastWorldStartEncounter = worldStartEncounter;
+                _lastWorldEncounterCount = encounterCount;
+                _highestCompletedEncounterCount = 0;
+            }
+
+            _highestCompletedEncounterCount = Mathf.Max(
+                _highestCompletedEncounterCount,
+                Mathf.Clamp(
+                    runController.CompletedCurrentWorldEncounterCount,
+                    0,
+                    encounterCount));
+            float completion01 = Mathf.Clamp01(
+                _highestCompletedEncounterCount / (float)encounterCount);
+            if (completion01 >= (2f / 3f))
+                return 2;
+            if (completion01 >= (1f / 3f))
+                return 1;
+            return 0;
+        }
+
+        private void ResetProgressiveGlassState()
+        {
+            _hasBlurState = false;
+            _currentBlurRadius = initialBlurRadiusPixels;
+            _currentBlurMix = initialBlurMix;
+            _highestCompletedEncounterCount = 0;
+            _lastWorldStartEncounter = -1;
+            _lastWorldEncounterCount = -1;
         }
 
         private void SetProceduralFallbackVisible(bool visible)
@@ -600,6 +755,14 @@ namespace Glassfall.Presentation
             tint = NormalizeTint(tint);
             boundsCoverage = Mathf.Clamp(boundsCoverage, 0.90f, 1f);
             prepareTimeoutSeconds = Mathf.Max(0.5f, prepareTimeoutSeconds);
+            initialBlurRadiusPixels = Mathf.Clamp(initialBlurRadiusPixels, 0f, 12f);
+            initialBlurMix = Mathf.Clamp01(initialBlurMix);
+            middleBlurRadiusPixels = Mathf.Clamp(middleBlurRadiusPixels, 0f, 12f);
+            middleBlurMix = Mathf.Clamp01(middleBlurMix);
+            lateBlurRadiusPixels = Mathf.Clamp(lateBlurRadiusPixels, 0f, 12f);
+            lateBlurMix = Mathf.Clamp01(lateBlurMix);
+            blurTransitionSpeed = Mathf.Max(0.01f, blurTransitionSpeed);
+            progressWorldSegmentIndex = Mathf.Max(0, progressWorldSegmentIndex);
         }
     }
 }

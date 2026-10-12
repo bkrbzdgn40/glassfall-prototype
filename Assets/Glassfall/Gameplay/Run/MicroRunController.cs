@@ -1,3 +1,4 @@
+using System;
 using Glassfall.Gameplay.Builds;
 using Glassfall.Gameplay.Combat;
 using Glassfall.Gameplay.Encounter;
@@ -35,6 +36,11 @@ namespace Glassfall.Gameplay.Run
             ArcHunterMovementMode.Strafe,
             ArcHunterMovementMode.WetRoutePressure
         };
+
+        [Header("M28A Seeded Encounter Variety")]
+        [SerializeField] private SeededEncounterCandidatePool[] encounterCandidatePools =
+            Array.Empty<SeededEncounterCandidatePool>();
+        [SerializeField] private int developmentFixedSeedOverride;
 
         [Header("World Segments")]
         [SerializeField] private MicroRunWorldSegment[] worldSegments =
@@ -104,6 +110,17 @@ namespace Glassfall.Gameplay.Run
         private bool _awaitingEncounterArrival;
         private int _activeWorldSegmentIndex = -1;
         private int _worldHandoffCount;
+        private MicroRunWorldSegment[] _authoredWorldSegments =
+            Array.Empty<MicroRunWorldSegment>();
+        private Vector2[] _authoredEncounterSpawnPositions =
+            Array.Empty<Vector2>();
+        private ArcHunterMovementMode[] _authoredMovementModes =
+            Array.Empty<ArcHunterMovementMode>();
+        private SeededEncounterCandidatePool[] _authoredCandidatePools =
+            Array.Empty<SeededEncounterCandidatePool>();
+        private SeededEncounterPlan _encounterPlan;
+        private int _runSeed;
+        private bool _encounterPlanGenerated;
 
         public MicroRunPhase Phase =>
             _progress != null ? _progress.Phase : MicroRunPhase.ChooseBuild;
@@ -258,6 +275,13 @@ namespace Glassfall.Gameplay.Run
                     : Vector2.zero;
             }
         }
+        public int RunSeed => _runSeed;
+        public string EncounterPlanSignature => _encounterPlan != null
+            ? _encounterPlan.Signature
+            : string.Empty;
+        public int EncounterPlanCount => _encounterPlan != null
+            ? _encounterPlan.Count
+            : 0;
         public ArcHunterMovementMode CurrentMovementMode => arcHunter != null
             ? arcHunter.MovementMode
             : ArcHunterMovementMode.Chase;
@@ -341,12 +365,65 @@ namespace Glassfall.Gameplay.Run
             wetnessField = field;
         }
 
+        /// <summary>
+        /// Development-only fixed seed hook. Set a non-zero value before a
+        /// run starts to reproduce the same six-slot encounter plan across
+        /// play-session restarts. Zero restores normal time-based seeding.
+        /// </summary>
+        public void ConfigureDevelopmentFixedSeed(int seed)
+        {
+            developmentFixedSeedOverride = seed;
+        }
+
+        public void RegenerateEncounterPlanForDevelopment()
+        {
+            _encounterPlanGenerated = false;
+            CaptureAuthoredEncounterConfiguration();
+            GenerateEncounterPlanForNewRun();
+        }
+
+        public bool TryGetEncounterPlanEntry(
+            int encounterIndex,
+            out SeededEncounterPlanEntry entry)
+        {
+            if (_encounterPlan != null &&
+                _encounterPlan.TryGetEntry(encounterIndex, out entry))
+            {
+                return true;
+            }
+
+            entry = default;
+            return false;
+        }
+
+        public void ConfigureEncounterCandidatePools(
+            SeededEncounterCandidatePool[] pools)
+        {
+            if (pools == null || pools.Length == 0)
+                return;
+
+            encounterCandidatePools = new SeededEncounterCandidatePool[
+                pools.Length];
+            for (int i = 0; i < pools.Length; i++)
+            {
+                SeededEncounterCandidatePool source = pools[i];
+                encounterCandidatePools[i] = source == null
+                    ? new SeededEncounterCandidatePool()
+                    : new SeededEncounterCandidatePool(
+                        source.CopyPositions());
+            }
+
+            _encounterPlanGenerated = false;
+            CaptureAuthoredEncounterConfiguration();
+        }
+
         public void ConfigureEncounterVariation(Vector2[] spawnPositions)
         {
             if (spawnPositions == null || spawnPositions.Length == 0)
                 return;
 
             encounterSpawnPositions = (Vector2[])spawnPositions.Clone();
+            _encounterPlanGenerated = false;
 
             if (GetConfiguredWorldSegmentCount() == 1 &&
                 worldSegments[0] != null)
@@ -356,6 +433,8 @@ namespace Glassfall.Gameplay.Run
                     encounterSpawnPositions,
                     worldSegments[0].CopyMovementModes());
             }
+
+            CaptureAuthoredEncounterConfiguration();
         }
 
         public void ConfigureEncounterMovementModes(
@@ -366,6 +445,7 @@ namespace Glassfall.Gameplay.Run
 
             encounterMovementModes =
                 (ArcHunterMovementMode[])movementModes.Clone();
+            _encounterPlanGenerated = false;
 
             if (GetConfiguredWorldSegmentCount() == 1 &&
                 worldSegments[0] != null)
@@ -375,6 +455,8 @@ namespace Glassfall.Gameplay.Run
                     worldSegments[0].CopyEncounterPositions(),
                     encounterMovementModes);
             }
+
+            CaptureAuthoredEncounterConfiguration();
         }
 
         public void ConfigureSingleWorldSegment(string worldId)
@@ -425,6 +507,8 @@ namespace Glassfall.Gameplay.Run
             currentWorldEncounterCount = worldSegments[0].EncounterCount;
             _activeWorldSegmentIndex = 0;
             _worldHandoffCount = 0;
+            _encounterPlanGenerated = false;
+            CaptureAuthoredEncounterConfiguration();
         }
 
         public bool TryGetWorldSegmentCopy(
@@ -450,6 +534,15 @@ namespace Glassfall.Gameplay.Run
             out Vector2 position)
         {
             position = Vector2.zero;
+            if (_encounterPlan != null &&
+                _encounterPlan.TryGetEntry(
+                    encounterIndex,
+                    out SeededEncounterPlanEntry plannedEntry))
+            {
+                position = plannedEntry.TargetPosition;
+                return true;
+            }
+
             int clampedEncounter = Mathf.Clamp(
                 encounterIndex,
                 1,
@@ -486,6 +579,21 @@ namespace Glassfall.Gameplay.Run
             position = Vector2.zero;
             if (CurrentWorldEncounter <= 0 ||
                 CurrentWorldEncounter >= CurrentWorldEncounterCount)
+            {
+                return false;
+            }
+
+            return TryGetEncounterTargetPosition(
+                CurrentEncounter + 1,
+                out position);
+        }
+
+        public bool TryGetNextEncounterTargetPosition(
+            out Vector2 position)
+        {
+            position = Vector2.zero;
+            if (CurrentEncounter <= 0 ||
+                CurrentEncounter >= EncounterCount)
             {
                 return false;
             }
@@ -604,6 +712,8 @@ namespace Glassfall.Gameplay.Run
             if (encounterCompletionBeatSeconds < 0.50f)
                 encounterCompletionBeatSeconds = 0.80f;
 
+            CaptureAuthoredEncounterConfiguration();
+            GenerateEncounterPlanForNewRun();
             _progress = new MicroRunProgress(GetEncounterCount());
             _encounterCompletionBeatRemaining = 0f;
             _pendingRewardEncounter = 0;
@@ -805,6 +915,7 @@ namespace Glassfall.Gameplay.Run
             _activeWorldSegmentIndex = 0;
             _worldHandoffCount = 0;
             contaminationSystem?.ResetForNewRun();
+            GenerateEncounterPlanForNewRun();
         }
 
         private void BeginPreparationPhase()
@@ -1068,6 +1179,14 @@ namespace Glassfall.Gameplay.Run
         private ArcHunterMovementMode ResolveMovementModeForEncounter(
             int encounterIndex)
         {
+            if (_encounterPlan != null &&
+                _encounterPlan.TryGetEntry(
+                    encounterIndex,
+                    out SeededEncounterPlanEntry plannedEntry))
+            {
+                return plannedEntry.MovementMode;
+            }
+
             if (TryResolveWorldSegment(
                     encounterIndex,
                     out MicroRunWorldSegment segment,
@@ -1150,6 +1269,170 @@ namespace Glassfall.Gameplay.Run
             neutralSpawner.SetPopulationRefillActive(
                 ShouldNeutralPopulationRefill(Phase),
                 allowImmediateAttempt);
+        }
+
+        private void CaptureAuthoredEncounterConfiguration()
+        {
+            _authoredWorldSegments = CloneWorldSegments(worldSegments);
+            _authoredEncounterSpawnPositions = encounterSpawnPositions != null
+                ? (Vector2[])encounterSpawnPositions.Clone()
+                : Array.Empty<Vector2>();
+            _authoredMovementModes = encounterMovementModes != null
+                ? (ArcHunterMovementMode[])encounterMovementModes.Clone()
+                : Array.Empty<ArcHunterMovementMode>();
+            _authoredCandidatePools = CloneCandidatePools(
+                encounterCandidatePools);
+        }
+
+        private void GenerateEncounterPlanForNewRun()
+        {
+            if (_encounterPlanGenerated)
+                return;
+
+            if (_authoredWorldSegments == null)
+                CaptureAuthoredEncounterConfiguration();
+
+            _runSeed = ResolveRunSeed();
+            SeededEncounterCandidatePool[] pools = _authoredCandidatePools;
+            if (pools == null || pools.Length == 0)
+                pools = BuildDefaultCandidatePools();
+
+            Collider2D playableBounds = arcHunter != null
+                ? arcHunter.PlayableBounds
+                : null;
+            _encounterPlan = SeededEncounterPlanBuilder.Build(
+                _runSeed,
+                _authoredWorldSegments,
+                _authoredEncounterSpawnPositions,
+                _authoredMovementModes,
+                pools,
+                playableBounds);
+            _encounterPlanGenerated = true;
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            Debug.Log(
+                "[Glassfall M28A] Run seed=" +
+                _runSeed +
+                " plan=" +
+                _encounterPlan.Signature);
+            SeededEncounterPlanEntry[] entries =
+                _encounterPlan.CopyEntries();
+            for (int i = 0; i < entries.Length; i++)
+            {
+                Debug.Log(
+                    "[Glassfall M28A] E" +
+                    entries[i].EncounterIndex +
+                    " " +
+                    entries[i].WorldId +
+                    " mode=" +
+                    entries[i].MovementMode +
+                    " target=" +
+                    entries[i].TargetPosition +
+                    (entries[i].UsedFallback ? " fallback" : string.Empty));
+                if (entries[i].UsedFallback)
+                {
+                    Debug.LogWarning(
+                        "[Glassfall M28A] Spawn fallback for E" +
+                        entries[i].EncounterIndex +
+                        " at " +
+                        entries[i].TargetPosition +
+                        ". Authored candidate pool was invalid or empty.");
+                }
+            }
+#endif
+        }
+
+        private int ResolveRunSeed()
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (developmentFixedSeedOverride != 0)
+                return developmentFixedSeedOverride;
+#endif
+
+            long ticks = DateTime.UtcNow.Ticks;
+            return unchecked((int)(ticks ^ (ticks >> 32) ^ Environment.TickCount));
+        }
+
+        private SeededEncounterCandidatePool[] BuildDefaultCandidatePools()
+        {
+            SeededEncounterCandidatePool[] pools =
+                new SeededEncounterCandidatePool[
+                    SeededEncounterPlanBuilder.RequiredSlotCount];
+            for (int slot = 0; slot < pools.Length; slot++)
+            {
+                Vector2 authoredPosition =
+                    GetAuthoredPositionForSlot(slot);
+                pools[slot] =
+                    SeededEncounterPlanBuilder.CreateDefaultCandidatePool(
+                        slot,
+                        authoredPosition);
+            }
+
+            return pools;
+        }
+
+        private Vector2 GetAuthoredPositionForSlot(int slot)
+        {
+            int cursor = 0;
+            if (_authoredWorldSegments != null)
+            {
+                for (int i = 0; i < _authoredWorldSegments.Length; i++)
+                {
+                    MicroRunWorldSegment segment = _authoredWorldSegments[i];
+                    if (segment == null || segment.EncounterCount <= 0)
+                        continue;
+
+                    if (slot < cursor + segment.EncounterCount)
+                    {
+                        return segment.GetEncounterPosition(slot - cursor);
+                    }
+
+                    cursor += segment.EncounterCount;
+                }
+            }
+
+            if (_authoredEncounterSpawnPositions != null &&
+                _authoredEncounterSpawnPositions.Length > 0)
+            {
+                return _authoredEncounterSpawnPositions[Mathf.Clamp(
+                    slot,
+                    0,
+                    _authoredEncounterSpawnPositions.Length - 1)];
+            }
+
+            return Vector2.zero;
+        }
+
+        private static MicroRunWorldSegment[] CloneWorldSegments(
+            MicroRunWorldSegment[] source)
+        {
+            if (source == null || source.Length == 0)
+                return Array.Empty<MicroRunWorldSegment>();
+
+            MicroRunWorldSegment[] clone =
+                new MicroRunWorldSegment[source.Length];
+            for (int i = 0; i < source.Length; i++)
+                clone[i] = source[i] != null ? source[i].Clone() : null;
+            return clone;
+        }
+
+        private static SeededEncounterCandidatePool[] CloneCandidatePools(
+            SeededEncounterCandidatePool[] source)
+        {
+            if (source == null || source.Length == 0)
+                return Array.Empty<SeededEncounterCandidatePool>();
+
+            SeededEncounterCandidatePool[] clone =
+                new SeededEncounterCandidatePool[source.Length];
+            for (int i = 0; i < source.Length; i++)
+            {
+                clone[i] = source[i] == null
+                    ? new SeededEncounterCandidatePool()
+                    : new SeededEncounterCandidatePool(
+                        source[i].CopyPositions());
+            }
+
+            return clone;
         }
 
         private int GetEncounterCount()

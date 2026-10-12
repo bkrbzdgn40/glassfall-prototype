@@ -762,6 +762,8 @@ namespace Glassfall.EditorTools
 
             SplitLinkVisual visual =
                 Object.FindAnyObjectByType<SplitLinkVisual>();
+            DropletSplitSystem splitSystem =
+                Object.FindAnyObjectByType<DropletSplitSystem>();
             if (visual == null)
             {
                 EditorUtility.DisplayDialog(
@@ -786,6 +788,17 @@ namespace Glassfall.EditorTools
                 wobbleAmplitude: 0.08f,
                 wobbleSpeed: 18f);
 
+            if (splitSystem != null)
+            {
+                Undo.RecordObject(
+                    splitSystem,
+                    "Configure Split Separation Limit");
+                splitSystem.ConfigureSeparationLimit(
+                    resistanceStartDistance: 8f,
+                    maximumDistance: 10f);
+                EditorUtility.SetDirty(splitSystem);
+            }
+
             EditorUtility.SetDirty(combat);
             EditorUtility.SetDirty(visual);
             MarkDirtyAndSelect(visual.gameObject);
@@ -800,7 +813,10 @@ namespace Glassfall.EditorTools
                 "gerilir ve damage efficiency düşer.\n" +
                 "- 9.0 separation civarında tension damage multiplier " +
                 "yaklaşık x0.45 tabanına ulaşır.\n\n" +
-                "Hard max distance, forced remerge veya movement cezası yoktur.\n\n" +
+                "8.0 sonrasında outward hareket kademeli direnç görür; " +
+                "10.0 separation konservatif fiziksel üst sınırdır.\n" +
+                "Elastic Membrane bu aralığı mevcut tension değerleri kadar " +
+                "genişletir; inward ve tangential hareket korunur.\n\n" +
                 "Ctrl+S ile sahneyi kaydet, ardından Play'e bas.",
                 "Tamam");
         }
@@ -3012,7 +3028,7 @@ Doğrulama:
                     "- Video yalnız NEON_WINDOW aktifken hazırlanır ve oynar.\n" +
                     "- İlk decoded frame gelene kadar video yüzeyi gizlidir.\n" +
                     "- Decode/prepare hatasında mevcut procedural Neon görünümü korunur.\n" +
-                    "- Kaynak oranı 16:9 korunur; blur uygulanmaz.\n" +
+                    "- Fogged Window ile aynı VideoBackgroundBlur shader/tuning zinciri kullanılır.\n" +
                     "- Video sesi kapalı ve loop açıktır.\n\n" +
                     "Ctrl+S ile sahneyi kaydet ve Fogged → Neon geçişini Play Mode'da doğrula.",
                     "Tamam");
@@ -3058,7 +3074,7 @@ Doğrulama:
             const string videoPath =
                 "Assets/Glassfall/Art/NeonWindow/NeonWindowBackgroundLoop.mp4";
             const string shaderPath =
-                "Assets/Glassfall/Presentation/NeonVideoBackground.shader";
+                "Assets/Glassfall/Presentation/VideoBackgroundBlur.shader";
 
             VideoClip videoClip =
                 AssetDatabase.LoadAssetAtPath<VideoClip>(videoPath);
@@ -3087,7 +3103,7 @@ Doğrulama:
                 {
                     EditorUtility.DisplayDialog(
                         "Glassfall - Neon Video Background kurulamadı",
-                        "NeonWindowBackgroundLoop.mp4, NeonVideoBackground shader, " +
+                        "NeonWindowBackgroundLoop.mp4, VideoBackgroundBlur shader, " +
                         "Arena/NeonWindowWorldV1, Main Camera, canonical world bounds " +
                         "veya MicroRunController bulunamadı.",
                         "Tamam");
@@ -3125,6 +3141,14 @@ Doğrulama:
                 GetOrAddComponent<MeshRenderer>(surface);
             NeonWindowVideoBackground videoBackground =
                 GetOrAddComponent<NeonWindowVideoBackground>(neonRoot);
+            NeonWindowGlassOverlay legacyGlassOverlay =
+                neonRoot.GetComponent<NeonWindowGlassOverlay>();
+            if (legacyGlassOverlay != null)
+                Undo.DestroyObjectImmediate(legacyGlassOverlay);
+            Transform legacyGlassSurface = neonRoot.transform.Find(
+                "NeonWindowPixelGlassOverlaySurface");
+            if (legacyGlassSurface != null)
+                Undo.DestroyObjectImmediate(legacyGlassSurface.gameObject);
             VideoPlayer videoPlayer = GetOrAddComponent<VideoPlayer>(neonRoot);
 
             Undo.RecordObject(
@@ -3145,6 +3169,9 @@ Doğrulama:
                 videoSortingOrder: -1091,
                 videoWorldZ: 6.0f,
                 coverage: 0.995f);
+            videoBackground.ConfigureFoggedGlassTreatment(
+                enabled: true,
+                worldSegmentIndex: 1);
 
             Undo.RecordObject(videoPlayer, "Configure Neon Video Player");
             videoPlayer.source = VideoSource.VideoClip;
@@ -3153,7 +3180,7 @@ Doğrulama:
             videoPlayer.targetMaterialRenderer = meshRenderer;
             videoPlayer.targetMaterialProperty = "_MainTex";
             videoPlayer.targetCamera = null;
-            videoPlayer.aspectRatio = VideoAspectRatio.FitInside;
+            videoPlayer.aspectRatio = VideoAspectRatio.FitOutside;
             videoPlayer.isLooping = true;
             videoPlayer.playOnAwake = false;
             videoPlayer.waitForFirstFrame = true;

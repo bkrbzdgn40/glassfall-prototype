@@ -210,6 +210,12 @@ namespace Glassfall.Presentation
 
         private bool TryGetNextRouteTarget(out Vector2 position)
         {
+            if (runController.TryGetNextEncounterTargetPosition(
+                    out position))
+            {
+                return true;
+            }
+
             int nextIndex = runController.CurrentWorldEncounter;
             bool routeMatchesCurrentWorld =
                 runController.CurrentWorldSegmentIndex ==
@@ -224,8 +230,8 @@ namespace Glassfall.Presentation
                 return true;
             }
 
-            return runController.TryGetNextCurrentWorldEncounterTargetPosition(
-                out position);
+            position = Vector2.zero;
+            return false;
         }
 
         private string GetObjectiveLabel()

@@ -18,6 +18,7 @@ namespace Glassfall.Presentation
     {
         private const string RuntimeVideoSurfaceName = "FoggedWindowVideoSurface";
         private const string VideoTextureProperty = "_MainTex";
+        private const string FinaleTintSurfaceName = "FoggedWindowE3FinaleTintSurface";
 
         private static readonly ProfilerMarker BackgroundCpuMarker =
             new ProfilerMarker("Glassfall.FoggedBackground.CPU");
@@ -103,11 +104,46 @@ namespace Glassfall.Presentation
         private float _videoPrepareStartedAt = -1f;
         private Texture2D _runtimeFallbackTexture;
 
+        [Header("E3 Finale Atmosphere")]
+        [SerializeField] private Color finaleTint =
+            new Color(0.72f, 0.08f, 0.045f, 1f);
+        [Range(0f, 1f)]
+        [SerializeField] private float finaleTintOpacity = 0.16f;
+        [SerializeField] private int finaleTintSortingOrder = -1090;
+        [SerializeField] private float finaleTintWorldZ = 6.1f;
+
+        private Texture2D _runtimeFinaleTintTexture;
+        private Sprite _runtimeFinaleTintSprite;
+        private SpriteRenderer _finaleTintRenderer;
+
         public int CurrentBlurPhase { get; private set; }
         public float CurrentBlurRadiusPixels => _currentBlurRadius;
         public float CurrentBlurMix => _currentBlurMix;
         public bool IsVideoFailureFallbackActive =>
             _videoFailureFallbackActive;
+        public bool IsFinaleAtmosphereVisible =>
+            _finaleTintRenderer != null && _finaleTintRenderer.enabled;
+
+        public static bool ShouldShowFinaleAtmosphere(
+            string worldId,
+            int worldSegmentIndex,
+            MicroRunPhase phase,
+            bool isWorldFinalEncounter,
+            bool isWorldCompletionBeat,
+            bool presentationActive)
+        {
+            if (!presentationActive || worldSegmentIndex != 0 ||
+                !string.Equals(
+                    worldId,
+                    "FOGGED_WINDOW",
+                    System.StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            return phase == MicroRunPhase.Encounter &&
+                (isWorldFinalEncounter || isWorldCompletionBeat);
+        }
 
         public static bool ShouldActivateVideoPrepareTimeoutFallback(
             bool isPrepared,
@@ -212,6 +248,7 @@ namespace Glassfall.Presentation
         {
             CacheDependencies();
             DisableLegacyOverlayChildren();
+            EnsureFinaleTintSurface();
             ApplyConfiguration(playIfPossible: false);
         }
 
@@ -219,6 +256,7 @@ namespace Glassfall.Presentation
         {
             CacheDependencies();
             DisableLegacyOverlayChildren();
+            EnsureFinaleTintSurface();
             ApplyConfiguration(playIfPossible: Application.isPlaying);
         }
 
@@ -238,7 +276,11 @@ namespace Glassfall.Presentation
 
             ResetWorldPresentationState();
 
+            if (_finaleTintRenderer != null)
+                _finaleTintRenderer.enabled = false;
+
             ReleaseRuntimeVideoResources();
+            ReleaseFinaleTintResources();
         }
 
         private void ResetWorldPresentationState()
@@ -262,6 +304,7 @@ namespace Glassfall.Presentation
 
                 UpdateProgressiveBlur(Time.unscaledDeltaTime);
                 UpdateVideoMaterialProperties();
+                UpdateFinaleAtmosphere();
                 CheckVideoPreparationTimeout();
                 TryRevealPreparedVideoSurface();
 
@@ -308,6 +351,7 @@ namespace Glassfall.Presentation
             bool shouldPlayVideo = enableVideoPlayback && backgroundClip != null;
 
             DisableLegacyOverlayChildren();
+            EnsureFinaleTintSurface();
             UpdateProgressiveBlur(0f);
 
             if (Application.isPlaying && enableVideoPlayback)
@@ -456,6 +500,103 @@ namespace Glassfall.Presentation
 
             UpdateVideoMaterialProperties();
             FitVideoSurface();
+        }
+
+        private void EnsureFinaleTintSurface()
+        {
+            if (!Application.isPlaying || _finaleTintRenderer != null)
+                return;
+
+            Transform existing = transform.Find(FinaleTintSurfaceName);
+            GameObject surfaceObject;
+            if (existing != null)
+            {
+                surfaceObject = existing.gameObject;
+                _finaleTintRenderer = surfaceObject.GetComponent<SpriteRenderer>();
+            }
+            else
+            {
+                surfaceObject = new GameObject(FinaleTintSurfaceName);
+                surfaceObject.transform.SetParent(transform, false);
+                _finaleTintRenderer = surfaceObject.AddComponent<SpriteRenderer>();
+            }
+
+            if (_runtimeFinaleTintTexture == null)
+            {
+                _runtimeFinaleTintTexture = new Texture2D(
+                    1,
+                    1,
+                    TextureFormat.RGBA32,
+                    false)
+                {
+                    name = "FoggedWindowE3FinaleTint",
+                    filterMode = FilterMode.Point,
+                    wrapMode = TextureWrapMode.Clamp,
+                    hideFlags = HideFlags.DontSave
+                };
+                _runtimeFinaleTintTexture.SetPixel(0, 0, Color.white);
+                _runtimeFinaleTintTexture.Apply(false, true);
+            }
+
+            if (_runtimeFinaleTintSprite == null)
+            {
+                _runtimeFinaleTintSprite = Sprite.Create(
+                    _runtimeFinaleTintTexture,
+                    new Rect(0f, 0f, 1f, 1f),
+                    new Vector2(0.5f, 0.5f),
+                    1f);
+                _runtimeFinaleTintSprite.name = "FoggedWindowE3FinaleTintSprite";
+            }
+
+            _finaleTintRenderer.sprite = _runtimeFinaleTintSprite;
+            _finaleTintRenderer.color = NormalizeTint(finaleTint);
+            _finaleTintRenderer.color = new Color(
+                _finaleTintRenderer.color.r,
+                _finaleTintRenderer.color.g,
+                _finaleTintRenderer.color.b,
+                Mathf.Clamp01(finaleTintOpacity));
+            _finaleTintRenderer.sortingOrder = finaleTintSortingOrder;
+            _finaleTintRenderer.enabled = false;
+            FitFinaleTintSurface();
+        }
+
+        private void UpdateFinaleAtmosphere()
+        {
+            EnsureFinaleTintSurface();
+            if (_finaleTintRenderer == null)
+                return;
+
+            bool visible = progressSource != null &&
+                ShouldShowFinaleAtmosphere(
+                    progressSource.CurrentWorldId,
+                    progressSource.CurrentWorldSegmentIndex,
+                    progressSource.Phase,
+                    progressSource.IsCurrentWorldFinalEncounter,
+                    progressSource.IsWorldCompletionBeat,
+                    isActiveAndEnabled);
+            _finaleTintRenderer.enabled = visible;
+            if (visible)
+                FitFinaleTintSurface();
+        }
+
+        private void FitFinaleTintSurface()
+        {
+            if (_finaleTintRenderer == null || targetCamera == null ||
+                !targetCamera.orthographic)
+            {
+                return;
+            }
+
+            float height = targetCamera.orthographicSize * 2f * videoCoverage;
+            float width = height * targetCamera.aspect;
+            Transform surface = _finaleTintRenderer.transform;
+            surface.position = new Vector3(
+                targetCamera.transform.position.x,
+                targetCamera.transform.position.y,
+                finaleTintWorldZ);
+            surface.rotation = Quaternion.identity;
+            surface.localScale = new Vector3(width, height, 1f);
+            _finaleTintRenderer.sortingOrder = finaleTintSortingOrder;
         }
 
         private void BeginPreparedVideoPlayback()
@@ -821,6 +962,30 @@ namespace Glassfall.Presentation
             }
         }
 
+        private void ReleaseFinaleTintResources()
+        {
+            if (_finaleTintRenderer != null)
+                _finaleTintRenderer.enabled = false;
+
+            if (_runtimeFinaleTintSprite != null)
+            {
+                Destroy(_runtimeFinaleTintSprite);
+                _runtimeFinaleTintSprite = null;
+            }
+
+            if (_runtimeFinaleTintTexture != null)
+            {
+                Destroy(_runtimeFinaleTintTexture);
+                _runtimeFinaleTintTexture = null;
+            }
+
+            if (_finaleTintRenderer != null)
+            {
+                Destroy(_finaleTintRenderer.gameObject);
+                _finaleTintRenderer = null;
+            }
+        }
+
         private void DisableLegacyOverlayChildren()
         {
             DisableLegacyChild("FoggedWindowFarBlur");
@@ -947,6 +1112,9 @@ namespace Glassfall.Presentation
                 videoPrepareTimeoutSeconds);
             videoFailureFallbackColor = NormalizeTint(
                 videoFailureFallbackColor);
+            finaleTint = NormalizeTint(finaleTint);
+            finaleTintOpacity = Mathf.Clamp01(finaleTintOpacity);
+            finaleTintWorldZ = Mathf.Clamp(finaleTintWorldZ, 4f, 8f);
         }
     }
 }

@@ -379,12 +379,17 @@ namespace Glassfall.Gameplay.Rewards
                     return true;
 
                 case MidRunReward.ElasticMembrane:
-                    if (combat == null)
+                {
+                    if (combat == null || splitSystem == null)
                         return false;
+                    float stableDistanceBefore = combat.StableMaxDistance;
                     combat.ApplyElasticMembraneReward(
                         MidRunRewardRules
                             .ElasticMembraneStableDistanceMultiplier);
+                    splitSystem.ApplyElasticMembraneSeparationBonus(
+                        combat.StableMaxDistance - stableDistanceBefore);
                     return true;
+                }
 
                 case MidRunReward.SlowEvaporation:
                     if (wetnessField == null)

@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Glassfall.Gameplay.Combat
 {
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(110)]
     public sealed class SplitLinkCombat : MonoBehaviour
     {
         [Header("References")]
@@ -162,30 +163,27 @@ namespace Glassfall.Gameplay.Combat
 
         private void FixedUpdate()
         {
-            if (!_encounterActive)
-            {
-                ClearTargetRuntimeState();
-                _splitDuration = 0f;
-                UpdateCapacitorDiagnostics(0f, 1f);
-                UpdateSurfaceTensionDiagnostics(
-                    false,
-                    Vector2.zero,
-                    Vector2.zero);
-                UpdateDiagnostics(0f, 0f, 1f, false);
-                return;
-            }
-
             Vector2 fullStart = default;
             Vector2 fullEnd = default;
             bool hasValidSplitPair = linkSystem != null &&
                 linkSystem.TryGetFullSegment(
                     out fullStart,
                     out fullEnd);
-            UpdateCapacitorState(hasValidSplitPair, Time.fixedDeltaTime);
             UpdateSurfaceTensionDiagnostics(
                 hasValidSplitPair,
                 fullStart,
                 fullEnd);
+
+            if (!_encounterActive)
+            {
+                ClearTargetRuntimeState();
+                _splitDuration = 0f;
+                UpdateCapacitorDiagnostics(0f, 1f);
+                UpdateDiagnostics(0f, 0f, 1f, false);
+                return;
+            }
+
+            UpdateCapacitorState(hasValidSplitPair, Time.fixedDeltaTime);
 
             if (target == null || target.IsDefeated || linkSystem == null)
             {
@@ -263,8 +261,57 @@ namespace Glassfall.Gameplay.Combat
             ClearTargetRuntimeState();
             _splitDuration = 0f;
             UpdateCapacitorDiagnostics(0f, 1f);
-            UpdateSurfaceTensionDiagnostics(false, Vector2.zero, Vector2.zero);
+            RefreshSurfaceTensionDiagnostics();
             UpdateDiagnostics(0f, 0f, 1f, false);
+        }
+
+        /// <summary>
+        /// Refreshes the tension readout without opening the damage gate.
+        /// This is used when a link remains split between encounters.
+        /// </summary>
+        public void RefreshSurfaceTensionDiagnostics()
+        {
+            Vector2 start = default;
+            Vector2 end = default;
+            bool validSplitPair = linkSystem != null &&
+                linkSystem.TryGetFullSegment(out start, out end);
+            UpdateSurfaceTensionDiagnostics(validSplitPair, start, end);
+        }
+
+        // Focused validation hook; runtime uses the link-system overload above.
+        public void RefreshSurfaceTensionDiagnosticsForPair(
+            Vector2 start,
+            Vector2 end)
+        {
+            UpdateSurfaceTensionDiagnostics(true, start, end);
+        }
+
+        public float CalculateSurfaceTensionOverstretch01(
+            float separation)
+        {
+            return SurfaceTensionRules.CalculateOverstretch01(
+                separation,
+                GetRuntimeStableMaxDistance(),
+                GetRuntimeFullPenaltyDistance());
+        }
+
+        public float CalculateSurfaceTensionDamageMultiplier(
+            float separation)
+        {
+            return SurfaceTensionRules.CalculateDamageMultiplier(
+                separation,
+                GetRuntimeStableMaxDistance(),
+                GetRuntimeFullPenaltyDistance(),
+                minimumOverstretchedDamageMultiplier);
+        }
+
+        public SurfaceTensionBand CalculateSurfaceTensionBand(
+            float separation)
+        {
+            return SurfaceTensionRules.CalculateBand(
+                separation,
+                closeMaxDistance,
+                GetRuntimeStableMaxDistance());
         }
 
         public void ResetRuntimeBuildTuning()
@@ -407,24 +454,15 @@ namespace Glassfall.Gameplay.Combat
 
             float separation = Vector2.Distance(start, end);
             debugLinkSeparation = separation;
-            float runtimeStableMaxDistance = GetRuntimeStableMaxDistance();
-            float runtimeFullPenaltyDistance = GetRuntimeFullPenaltyDistance();
 
             debugSurfaceTensionOverstretch01 =
-                SurfaceTensionRules.CalculateOverstretch01(
-                    separation,
-                    runtimeStableMaxDistance,
-                    runtimeFullPenaltyDistance);
+                CalculateSurfaceTensionOverstretch01(separation);
             debugSurfaceTensionDamageMultiplier =
-                SurfaceTensionRules.CalculateDamageMultiplier(
-                    separation,
-                    runtimeStableMaxDistance,
-                    runtimeFullPenaltyDistance,
-                    minimumOverstretchedDamageMultiplier);
+                CalculateSurfaceTensionDamageMultiplier(separation);
             debugSurfaceTensionBand = SurfaceTensionRules.CalculateBand(
                 separation,
                 closeMaxDistance,
-                runtimeStableMaxDistance);
+                GetRuntimeStableMaxDistance());
         }
 
         private void UpdateCapacitorState(bool validSplitPair, float deltaTime)
